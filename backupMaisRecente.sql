@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.2.0 - MySQL Community Server - GPL
+-- Versão do servidor:           8.0.36 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.6.0.6765
+-- HeidiSQL Versão:              12.8.0.6908
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.agendamentos: ~1 rows (aproximadamente)
+DELETE FROM `agendamentos`;
 INSERT INTO `agendamentos` (`codAgendamentos`, `dataHora`, `pacientes_codPaciente`, `medicos_codMedico`) VALUES
 	(1, '2024-02-02 23:00:00', 1, 1);
 
@@ -51,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `atendimento` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.atendimento: ~1 rows (aproximadamente)
+DELETE FROM `atendimento`;
 INSERT INTO `atendimento` (`codAtendimento`, `pacientes_codPaciente`, `medicos_codMedico`, `dataAtendimento`, `dataPagamento`, `tipoPagamento`) VALUES
 	(1, 1, 1, '2024-01-01', '2024-01-01', 'Pix');
 
@@ -63,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `cargofuncionario` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.cargofuncionario: ~3 rows (aproximadamente)
+DELETE FROM `cargofuncionario`;
 INSERT INTO `cargofuncionario` (`codCargo`, `nomeCargo`) VALUES
 	(2, 'Recepcionista'),
 	(3, 'Segurança'),
@@ -81,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `dadosconsulta` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.dadosconsulta: ~3 rows (aproximadamente)
+DELETE FROM `dadosconsulta`;
 INSERT INTO `dadosconsulta` (`codConsulta`, `diagnostica`, `receita_codReceita`, `atendimento_codAtendimento`) VALUES
 	(2, 'Dor de cabeça', 2, 2),
 	(3, 'Tumor', 1, 2),
@@ -94,9 +98,9 @@ CREATE TABLE IF NOT EXISTS `especialidade` (
   PRIMARY KEY (`codEspecialidade`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.especialidade: ~5 rows (aproximadamente)
+-- Copiando dados para a tabela tiago_victoria_clinica.especialidade: ~4 rows (aproximadamente)
+DELETE FROM `especialidade`;
 INSERT INTO `especialidade` (`codEspecialidade`, `nomeEspecialidade`) VALUES
-	(1, 'Ortopedia'),
 	(2, 'Dermatologista'),
 	(3, 'Pediatra'),
 	(4, 'Psiquiatria'),
@@ -113,11 +117,8 @@ CREATE TABLE IF NOT EXISTS `funcionarios` (
   KEY `fk_funcionarios_cargoFuncionario_idx` (`cargoFuncionario_codCargo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.funcionarios: ~3 rows (aproximadamente)
-INSERT INTO `funcionarios` (`codFuncionario`, `nomeFuncionario`, `salarioFuncionario`, `cargoFuncionario_codCargo`) VALUES
-	(1, 'Pedro Assunta', 1250.00, 3),
-	(2, 'Elisa Silva', 999.99, 2),
-	(3, 'Elias Franco', 999.99, 3);
+-- Copiando dados para a tabela tiago_victoria_clinica.funcionarios: ~0 rows (aproximadamente)
+DELETE FROM `funcionarios`;
 
 -- Copiando estrutura para tabela tiago_victoria_clinica.medicos
 DROP TABLE IF EXISTS `medicos`;
@@ -133,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `medicos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.medicos: ~3 rows (aproximadamente)
+DELETE FROM `medicos`;
 INSERT INTO `medicos` (`codMedico`, `nomeMedico`, `cpfMedico`, `crmMedico`, `emailMedico`, `especialidade_codEspecialidade`) VALUES
 	(4, 'Luciana Vieira', '124.786.097-97', 'CRM/SP 123773', 'luciana.vieira@yahoo.com', '1'),
 	(5, 'Flávio Vilhena', '342.796.808-01', 'CRM/MG 352521', 'flavio.vilhena@yahoo.com', '2'),
@@ -163,9 +165,9 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   PRIMARY KEY (`codPaciente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.pacientes: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela tiago_victoria_clinica.pacientes: ~2 rows (aproximadamente)
+DELETE FROM `pacientes`;
 INSERT INTO `pacientes` (`codPaciente`, `nomePaciente`, `cpfPaciente`, `telefonePaciente`, `emailPaciente`) VALUES
-	(1, 'Tiago Masaro', '12968505602', '99956-7856', 'tiago.masaro@yahoo.com'),
 	(2, 'Victória Caixeta', '13658915632', '99975-6854', 'victoria.caixeta@email.com'),
 	(3, 'Priscila Santos', '12945863202', '99685-2634', 'priscila.santos@hotmail.com');
 
@@ -459,6 +461,101 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaEspecialidade
+DROP PROCEDURE IF EXISTS `p_apagaEspecialidade`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaEspecialidade`(
+	IN `codEspecialidadeApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM especialidade WHERE codEspecialidade = codEspecialidadeApaga;
+	if (@contador = 0)
+		then SELECT "Especialidade não cadastrada!" AS erro;
+		else
+			DELETE FROM especialidade WHERE codEspecialidade = codEspecialidadeApaga;
+			SELECT * FROM especialidade;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaFuncionario
+DROP PROCEDURE IF EXISTS `p_apagaFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaFuncionario`(
+	IN `codFuncionarioApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM funcionarios WHERE codFuncionario = codFuncionarioApagar;
+	if (@contador = 0)
+		then SELECT "Funcionário não cadastrado!" AS erro;
+		else
+			DELETE FROM funcionarios WHERE codFuncionario = codFuncionario;
+			SELECT * FROM funcionarios;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaMedico
+DROP PROCEDURE IF EXISTS `p_apagaMedico`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaMedico`(
+	IN `codMedicoApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM medicos WHERE codMedico = codMedicoApaga;
+	if (@contador = 0)
+		then SELECT "Médico não cadastrado!" AS erro;
+		else
+			DELETE FROM medicos WHERE codMedico = codMedicoApaga;
+			SELECT * FROM medicos;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaPaciente
+DROP PROCEDURE IF EXISTS `p_apagaPaciente`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaPaciente`(
+	IN `codPacienteApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM pacientes WHERE codPaciente = codPacienteApagar;
+	if (@contador = 0)
+		then SELECT "Paciente não existe!" AS erro;
+		else
+			DELETE FROM pacientes WHERE codPaciente = codPacienteApagar;
+			SELECT * FROM pacientes;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaReceita
+DROP PROCEDURE IF EXISTS `p_apagaReceita`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaReceita`(
+	IN `codReceitaApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM receita WHERE codReceita = codReceitaApagar;
+	if (@contador = 0)
+		then SELECT "Receita não existe!" AS erro;
+		else
+			DELETE FROM receita WHERE codReceita = codReceitaApagar;
+			SELECT * FROM receita;
+	END if;
+
+END//
+DELIMITER ;
+
 -- Copiando estrutura para procedure tiago_victoria_clinica.p_insereAgendamento
 DROP PROCEDURE IF EXISTS `p_insereAgendamento`;
 DELIMITER //
@@ -596,9 +693,9 @@ CREATE TABLE IF NOT EXISTS `receita` (
   PRIMARY KEY (`codReceita`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.receita: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela tiago_victoria_clinica.receita: ~2 rows (aproximadamente)
+DELETE FROM `receita`;
 INSERT INTO `receita` (`codReceita`, `remediosPrescritos`) VALUES
-	(1, 'nimesulida'),
 	(2, 'Amoxicilina'),
 	(3, 'Aspirina');
 
