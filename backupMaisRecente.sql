@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.0.36 - MySQL Community Server - GPL
+-- Versão do servidor:           8.2.0 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.8.0.6908
+-- HeidiSQL Versão:              12.6.0.6765
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,11 +32,9 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
   KEY `fk_agendamentos_medicos1_idx` (`medicos_codMedico`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.agendamentos: ~2 rows (aproximadamente)
-DELETE FROM `agendamentos`;
+-- Copiando dados para a tabela tiago_victoria_clinica.agendamentos: ~1 rows (aproximadamente)
 INSERT INTO `agendamentos` (`codAgendamentos`, `dataHora`, `pacientes_codPaciente`, `medicos_codMedico`) VALUES
-	(1, '2024-11-08 09:30:00', 1, 2),
-	(2, '2025-01-23 12:25:00', 2, 3);
+	(1, '2024-02-02 23:00:00', 1, 1);
 
 -- Copiando estrutura para tabela tiago_victoria_clinica.atendimento
 DROP TABLE IF EXISTS `atendimento`;
@@ -52,11 +50,9 @@ CREATE TABLE IF NOT EXISTS `atendimento` (
   KEY `fk_pacientes_has_medicos_pacientes1_idx` (`pacientes_codPaciente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.atendimento: ~2 rows (aproximadamente)
-DELETE FROM `atendimento`;
+-- Copiando dados para a tabela tiago_victoria_clinica.atendimento: ~1 rows (aproximadamente)
 INSERT INTO `atendimento` (`codAtendimento`, `pacientes_codPaciente`, `medicos_codMedico`, `dataAtendimento`, `dataPagamento`, `tipoPagamento`) VALUES
-	(1, 1, 1, '2024-11-06', '2024-11-07', 'Crédito'),
-	(2, 1, 2, '2024-12-10', '2024-12-15', 'Débito');
+	(1, 1, 1, '2024-01-01', '2024-01-01', 'Pix');
 
 -- Copiando estrutura para tabela tiago_victoria_clinica.cargofuncionario
 DROP TABLE IF EXISTS `cargofuncionario`;
@@ -66,10 +62,8 @@ CREATE TABLE IF NOT EXISTS `cargofuncionario` (
   PRIMARY KEY (`codCargo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela tiago_victoria_clinica.cargofuncionario: ~4 rows (aproximadamente)
-DELETE FROM `cargofuncionario`;
+-- Copiando dados para a tabela tiago_victoria_clinica.cargofuncionario: ~3 rows (aproximadamente)
 INSERT INTO `cargofuncionario` (`codCargo`, `nomeCargo`) VALUES
-	(1, 'Faxineiro'),
 	(2, 'Recepcionista'),
 	(3, 'Segurança'),
 	(4, 'Enfermeiro');
@@ -84,14 +78,13 @@ CREATE TABLE IF NOT EXISTS `dadosconsulta` (
   PRIMARY KEY (`codConsulta`,`receita_codReceita`,`atendimento_codAtendimento`),
   KEY `fk_dadosConsulta_receita1_idx` (`receita_codReceita`),
   KEY `fk_dadosConsulta_atendimento1_idx` (`atendimento_codAtendimento`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.dadosconsulta: ~3 rows (aproximadamente)
-DELETE FROM `dadosconsulta`;
 INSERT INTO `dadosconsulta` (`codConsulta`, `diagnostica`, `receita_codReceita`, `atendimento_codAtendimento`) VALUES
-	(1, 'Tosse', 1, 1),
 	(2, 'Dor de cabeça', 2, 2),
-	(3, 'Tumor', 1, 2);
+	(3, 'Tumor', 1, 2),
+	(4, 'Gripe', 1, 2);
 
 -- Copiando estrutura para tabela tiago_victoria_clinica.especialidade
 DROP TABLE IF EXISTS `especialidade`;
@@ -102,9 +95,8 @@ CREATE TABLE IF NOT EXISTS `especialidade` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.especialidade: ~5 rows (aproximadamente)
-DELETE FROM `especialidade`;
 INSERT INTO `especialidade` (`codEspecialidade`, `nomeEspecialidade`) VALUES
-	(1, 'Plástica'),
+	(1, 'Ortopedia'),
 	(2, 'Dermatologista'),
 	(3, 'Pediatra'),
 	(4, 'Psiquiatria'),
@@ -122,11 +114,10 @@ CREATE TABLE IF NOT EXISTS `funcionarios` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.funcionarios: ~3 rows (aproximadamente)
-DELETE FROM `funcionarios`;
 INSERT INTO `funcionarios` (`codFuncionario`, `nomeFuncionario`, `salarioFuncionario`, `cargoFuncionario_codCargo`) VALUES
-	(1, 'Flávia Costa', 2000.00, 1),
-	(2, 'Elisa Silva', 1050.50, 2),
-	(3, 'Elias Franco', 1500.00, 3);
+	(1, 'Pedro Assunta', 1250.00, 3),
+	(2, 'Elisa Silva', 999.99, 2),
+	(3, 'Elias Franco', 999.99, 3);
 
 -- Copiando estrutura para tabela tiago_victoria_clinica.medicos
 DROP TABLE IF EXISTS `medicos`;
@@ -142,7 +133,6 @@ CREATE TABLE IF NOT EXISTS `medicos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.medicos: ~3 rows (aproximadamente)
-DELETE FROM `medicos`;
 INSERT INTO `medicos` (`codMedico`, `nomeMedico`, `cpfMedico`, `crmMedico`, `emailMedico`, `especialidade_codEspecialidade`) VALUES
 	(4, 'Luciana Vieira', '124.786.097-97', 'CRM/SP 123773', 'luciana.vieira@yahoo.com', '1'),
 	(5, 'Flávio Vilhena', '342.796.808-01', 'CRM/MG 352521', 'flavio.vilhena@yahoo.com', '2'),
@@ -174,11 +164,151 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.pacientes: ~3 rows (aproximadamente)
-DELETE FROM `pacientes`;
 INSERT INTO `pacientes` (`codPaciente`, `nomePaciente`, `cpfPaciente`, `telefonePaciente`, `emailPaciente`) VALUES
 	(1, 'Tiago Masaro', '12968505602', '99956-7856', 'tiago.masaro@yahoo.com'),
 	(2, 'Victória Caixeta', '13658915632', '99975-6854', 'victoria.caixeta@email.com'),
 	(3, 'Priscila Santos', '12945863202', '99685-2634', 'priscila.santos@hotmail.com');
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraAgendamento
+DROP PROCEDURE IF EXISTS `p_alteraAgendamento`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraAgendamento`(
+	IN `codAgendamentosAltera` INT,
+	IN `pacientes_codPacienteAltera` INT,
+	IN `medicos_codMedicoAltera` INT,
+	IN `dataHoraAltera` DATETIME
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM agendamentos WHERE codAgendamentos = codAgendamentosAltera;
+	
+	if (@contador = 0)
+		then SELECT "Agendamento não existe!" AS erro;
+		ELSE UPDATE agendamentos SET pacientes_codPaciente = pacientes_codPacienteAltera, medicos_codMedico = medicos_codMedicoAltera,
+		dataHora = dataHoraAltera
+				WHERE codAgendamentos = codAgendamentosAltera  ;
+			
+	END if;
+		SELECT * FROM agendamentos;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraAtendimento
+DROP PROCEDURE IF EXISTS `p_alteraAtendimento`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraAtendimento`(
+	IN `codAtendimentoAltera` INT,
+	IN `pacientes_codPacienteAltera` INT,
+	IN `medicos_codMedicoAltera` INT,
+	IN `dataAtendimentoAltera` DATE,
+	IN `dataPagamentoAltera` DATE,
+	IN `tipoPagamentoAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM atendimento WHERE codAtendimento = codAtendimentoAltera;
+	
+	if (@contador = 0)
+		then SELECT "Atendimento não existe!" AS erro;
+		ELSE UPDATE atendimento SET pacientes_codPaciente = pacientes_codPacienteAltera, medicos_codMedico = medicos_codMedicoAltera, 
+		dataAtendimento = dataAtendimentoAltera, dataPagamento = dataPagamentoAltera, tipoPagamento = tipoPagamentoAltera
+		
+				WHERE codAtendimento = codAtendimentoAltera  ;
+			
+	END if;
+		SELECT * FROM atendimento;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraCargoFuncionario
+DROP PROCEDURE IF EXISTS `p_alteraCargoFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraCargoFuncionario`(
+	IN `codCargoAltera` INT,
+	IN `nomeCargoAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM cargofuncionario WHERE codCargo = codCargoAltera;
+	
+	if (@contador = 0)
+		then SELECT "Cargo não encontrado!" AS erro;
+		ELSE UPDATE cargofuncionario SET nomeCargo = nomeCargoAltera
+				WHERE codCargo = codCargoAltera  ;
+			
+	END if;
+		SELECT * FROM cargofuncionario;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraDadosConsulta
+DROP PROCEDURE IF EXISTS `p_alteraDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraDadosConsulta`(
+	IN `codConsultaAltera` INT,
+	IN `dignosticoAltera` VARCHAR(300),
+	IN `codReceitaAltera` INT,
+	IN `codAtendimentoAltera` INT
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM dadosConsulta WHERE codConsulta = codConsultaAltera;
+	
+	if (@contador = 0)
+		then SELECT "Consulta não existe!" AS erro;
+		ELSE UPDATE dadosConsulta SET diagnostica = dignosticoAltera, receita_codReceita = codReceitaAltera, atendimento_codAtendimento = codAtendimentoAltera
+		
+				WHERE codConsulta = codConsultaAltera  ;
+			
+	END if;
+		SELECT * FROM dadosConsulta;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraEspecialidade
+DROP PROCEDURE IF EXISTS `p_alteraEspecialidade`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraEspecialidade`(
+	IN `codEspecialidadeAltera` INT,
+	IN `nomeEspecialidadeAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM especialidade WHERE codEspecialidade = codEspecialidadeAltera;
+	
+	if (@contador = 0)
+		then SELECT "Especialidade não encontrada!" AS erro;
+		ELSE UPDATE especialidade SET nomeEspecialidade = nomeEspecialidadeAltera
+				WHERE codEspecialidade = codEspecialidadeAltera  ;
+			
+	END if;
+		SELECT * FROM especialidade;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraFuncionario
+DROP PROCEDURE IF EXISTS `p_alteraFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraFuncionario`(
+	IN `funcionarioAltera` INT,
+	IN `nomeFuncionarioAltera` VARCHAR(150),
+	IN `salarioFuncionarioAltera` DOUBLE,
+	IN `cargoFuncionarioAltera` INT
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM funcionarios WHERE codFuncionario = funcionarioAltera;
+	
+	if (@contador = 0)
+		then SELECT "Funcionário não encontrado!" AS erro;
+		ELSE UPDATE funcionarios SET nomeFuncionario = nomeFuncionarioAltera, salarioFuncionario = salarioFuncionarioAltera, cargoFuncionario_codCargo = cargoFuncionarioAltera
+		
+				WHERE codFuncionario = funcionarioAltera  ;
+			
+	END if;
+		SELECT * FROM funcionarios;
+	
+END//
+DELIMITER ;
 
 -- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraMedico
 DROP PROCEDURE IF EXISTS `p_alteraMedico`;
@@ -231,6 +361,104 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraReceita
+DROP PROCEDURE IF EXISTS `p_alteraReceita`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraReceita`(
+	IN `receitaAltera` INT,
+	IN `remediosAltera` VARCHAR(250)
+)
+BEGIN
+
+		SELECT COUNT(*) INTO @contador FROM receita WHERE codReceita = receitaAltera ;
+	
+	if (@contador = 0)
+		then SELECT "Receita não prescrita!" AS erro;
+		ELSE UPDATE receita  SET remediosPrescritos = remediosAltera
+				WHERE codReceita = receitaAltera ;
+			
+	END if;
+		SELECT * FROM receita ;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaAgendamento
+DROP PROCEDURE IF EXISTS `p_apagaAgendamento`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaAgendamento`(
+	IN `codAgendamentosApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM agendamentos WHERE codAgendamentos = codAgendamentosApagar;
+	if (@contador = 0)
+		then SELECT "Agendamento não existe!" AS erro;
+		else
+			DELETE FROM agendamentos WHERE codAgendamentos = codAgendamentosApagar;
+			SELECT * FROM agendamentos;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaAtendimento
+DROP PROCEDURE IF EXISTS `p_apagaAtendimento`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaAtendimento`(
+	IN `codAtendimentoApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM atendimento WHERE codAtendimento = codAtendimentoApagar;
+	if (@contador = 0)
+		then SELECT "Atendimento não existe!" AS erro;
+		else
+			DELETE FROM atendimento WHERE codAtendimento = codAtendimentoApagar;
+			SELECT * FROM atendimento;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaCargo
+DROP PROCEDURE IF EXISTS `p_apagaCargo`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaCargo`(
+	IN `codCargoApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM cargofuncionario WHERE codCargo = codCargoApagar;
+	if (@contador = 0)
+		then SELECT "Cargo não existe!" AS erro;
+		else
+			DELETE FROM cargofuncionario WHERE codCargo = codCargoApagar;
+			SELECT * FROM cargofuncionario;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaDadosConsulta
+DROP PROCEDURE IF EXISTS `p_apagaDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaDadosConsulta`(
+	IN `codConsultaApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM dadosconsulta WHERE codConsulta = codConsultaApaga;
+	if (@contador = 0)
+		then SELECT "Consulta não existe!" AS erro;
+		else
+			DELETE FROM dadosconsulta WHERE codConsulta = codConsultaApaga;
+			SELECT * FROM dadosconsulta;
+	END if;
+
+END//
+DELIMITER ;
+
 -- Copiando estrutura para procedure tiago_victoria_clinica.p_insereAgendamento
 DROP PROCEDURE IF EXISTS `p_insereAgendamento`;
 DELIMITER //
@@ -272,6 +500,20 @@ CREATE PROCEDURE `p_insereCargoFuncionario`(
 BEGIN
 	INSERT INTO cargofuncionario(nomeCargo) VALUES(nomeNovo);
 	SELECT * FROM cargofuncionario ;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereDadosConsulta
+DROP PROCEDURE IF EXISTS `p_insereDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_insereDadosConsulta`(
+	IN `diagnosticoInsere` VARCHAR(300),
+	IN `codReceitaInsere` INT,
+	IN `codAtendimentoInsere` INT
+)
+BEGIN
+	INSERT INTO dadosconsulta(diagnostica, receita_codReceita, atendimento_codAtendimento) VALUES(diagnosticoInsere, codReceitaInsere, codAtendimentoInsere);
+	SELECT * FROM dadosconsulta;
 END//
 DELIMITER ;
 
@@ -355,9 +597,8 @@ CREATE TABLE IF NOT EXISTS `receita` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- Copiando dados para a tabela tiago_victoria_clinica.receita: ~3 rows (aproximadamente)
-DELETE FROM `receita`;
 INSERT INTO `receita` (`codReceita`, `remediosPrescritos`) VALUES
-	(1, 'Dipirona'),
+	(1, 'nimesulida'),
 	(2, 'Amoxicilina'),
 	(3, 'Aspirina');
 
