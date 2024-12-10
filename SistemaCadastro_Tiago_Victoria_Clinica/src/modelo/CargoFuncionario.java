@@ -8,44 +8,9 @@ package modelo;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- *
- * @author tulio
- */
 public class CargoFuncionario implements Serializable{ // padrão java beans
     private Integer codCargo;
     private String nomeCargo;
-    
-
-    public CargoFuncionario() { // padrão java beans
-    }
-
-    
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.codCargo);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CargoFuncionario other = (CargoFuncionario) obj;
-        if (!Objects.equals(this.codCargo, other.codCargo)) {
-            return false;
-        }
-        return true;
-    }
 
     public Integer getCodCargo() {
         return codCargo;
@@ -63,6 +28,35 @@ public class CargoFuncionario implements Serializable{ // padrão java beans
         this.nomeCargo = nomeCargo;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CargoFuncionario other = (CargoFuncionario) obj;
+        if (!Objects.equals(this.nomeCargo, other.nomeCargo)) {
+            return false;
+        }
+        if (!Objects.equals(this.codCargo, other.codCargo)) {
+            return false;
+        }
+        return true;
+    }
+    
+
+   
     
 
 }

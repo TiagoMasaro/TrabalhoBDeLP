@@ -163,11 +163,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void menuAgendamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAgendamentosActionPerformed
         // TODO add your handling code here:
-        FormCargoFuncionario form = new FormCargoFuncionario(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
-        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
-        form.setLocationRelativeTo(null);// centro da tela
-        form.setResizable(false);// retira o botão maximizar
-        form.setVisible(true);//visualiza o form
+       
     }//GEN-LAST:event_menuAgendamentosActionPerformed
 
     private void menuCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroActionPerformed
@@ -176,12 +172,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void menuAtendimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAtendimentosActionPerformed
         // TODO add your handling code here:
-        FormFuncionario form = new FormFuncionario(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
-        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
-        form.setLocationRelativeTo(null);// centro da tela
-        form.setResizable(false);// retira o botão maximizar
-        form.setVisible(true);//visualiza o form
-        
+       
     }//GEN-LAST:event_menuAtendimentosActionPerformed
 
     private void menuCargoFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCargoFuncionarioActionPerformed
@@ -203,6 +194,11 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void menuEspecialidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEspecialidadeActionPerformed
         // TODO add your handling code here:
+         FormEspecialidade form = new FormEspecialidade(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
+        form.setLocationRelativeTo(null);// centro da tela
+        form.setResizable(false);// retira o botão maximizar
+        form.setVisible(true);//visualiza o form
     }//GEN-LAST:event_menuEspecialidadeActionPerformed
 
     private void menuPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPacienteActionPerformed
