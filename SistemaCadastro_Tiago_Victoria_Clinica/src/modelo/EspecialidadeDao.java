@@ -104,7 +104,11 @@ public class EspecialidadeDao {
 
     }
     
+<<<<<<< HEAD
      /*public CargoFuncionario localizar(Integer id) {
+=======
+     public CargoFuncionario localizar(Integer id) {
+>>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
     String sql = "select * from especialidade where codEspecialidade=?";
     CargoFuncionario obj = null;
     try {
@@ -121,6 +125,7 @@ public class EspecialidadeDao {
         JOptionPane.showMessageDialog(null, "Erro de SQL ao localizar a especialidade: " + e.getMessage());
     }
     return obj;  
+<<<<<<< HEAD
 }*/
     
     public Especialidade localizar(Integer id){
@@ -141,6 +146,9 @@ public class EspecialidadeDao {
            }
         return null;
     }
+=======
+}
+>>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
 
     
 }

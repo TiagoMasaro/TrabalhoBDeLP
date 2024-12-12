@@ -127,12 +127,17 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void menuPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPacientesActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
         FormPacientes form = new FormPacientes(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
         form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
         form.setLocationRelativeTo(null);// centro da tela
         form.setResizable(false);// retira o botão maximizar
         form.setVisible(true);//visualiza o form
     }//GEN-LAST:event_menuPacientesActionPerformed
+=======
+       
+    }//GEN-LAST:event_menuAgendamentosActionPerformed
+>>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
 
     private void menuCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroActionPerformed
         // TODO add your handling code here:
@@ -140,6 +145,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
     private void menuReceitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReceitaActionPerformed
         // TODO add your handling code here:
+<<<<<<< HEAD
         FormReceita form = new FormReceita(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
         form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
         form.setLocationRelativeTo(null);// centro da tela
@@ -155,6 +161,10 @@ public class FormPrincipal extends javax.swing.JFrame {
         form.setResizable(false);// retira o botão maximizar
         form.setVisible(true);//visualiza o form
     }//GEN-LAST:event_menuEspecialidadeActionPerformed
+=======
+       
+    }//GEN-LAST:event_menuAtendimentosActionPerformed
+>>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
 
     private void menuCargoFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCargoFuncionarioActionPerformed
         // TODO add your handling code here:
@@ -174,6 +184,30 @@ public class FormPrincipal extends javax.swing.JFrame {
         form.setVisible(true);//visualiza o form
     }//GEN-LAST:event_menuMedicoActionPerformed
 
+<<<<<<< HEAD
+=======
+    private void menuEspecialidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEspecialidadeActionPerformed
+        // TODO add your handling code here:
+         FormEspecialidade form = new FormEspecialidade(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
+        form.setLocationRelativeTo(null);// centro da tela
+        form.setResizable(false);// retira o botão maximizar
+        form.setVisible(true);//visualiza o form
+    }//GEN-LAST:event_menuEspecialidadeActionPerformed
+
+    private void menuPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPacienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuPacienteActionPerformed
+
+    private void menuDadosConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDadosConsultaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuDadosConsultaActionPerformed
+
+    private void menuReceitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReceitaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuReceitaActionPerformed
+
+>>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
     /**
      * @param args the command line arguments
      */
