@@ -104,30 +104,7 @@ public class EspecialidadeDao {
 
     }
     
-<<<<<<< HEAD
-     /*public CargoFuncionario localizar(Integer id) {
-=======
-     public CargoFuncionario localizar(Integer id) {
->>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
-    String sql = "select * from especialidade where codEspecialidade=?";
-    CargoFuncionario obj = null;
-    try {
-        PreparedStatement pst = Conexao.getPreparedStatement(sql);
-        pst.setInt(1, id);
-        ResultSet rs = pst.executeQuery();
-        if (rs.next()) {
-            obj = new CargoFuncionario();
-            obj.setCodCargo(rs.getInt("codEspecialidade"));
-            obj.setNomeCargo(rs.getString("nomeEspecialidade"));
-           
-        }
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro de SQL ao localizar a especialidade: " + e.getMessage());
-    }
-    return obj;  
-<<<<<<< HEAD
-}*/
-    
+
     public Especialidade localizar(Integer id){
         String sql = "select * from especialidade where codEspecialidade=?";
         Especialidade obj = new Especialidade();
@@ -146,9 +123,6 @@ public class EspecialidadeDao {
            }
         return null;
     }
-=======
-}
->>>>>>> f7c3c539eeb85df494bbe15cf3fadd00c87b56a4
 
     
 }

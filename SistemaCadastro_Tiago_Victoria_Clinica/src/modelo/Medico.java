@@ -16,15 +16,16 @@ import java.util.Objects;
  * @author 12968505602
  */
 public class Medico implements Serializable{
-    private Integer codigo, objespecialidade_codEspecialidade;
+    private Integer codMedico;
     private String nome, cpf, crm, email;
+    private Especialidade objEspecialidade;
 
     public Integer getCodigo() {
-        return codigo;
+        return codMedico;
     }
 
     public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
+        this.codMedico = codigo;
     }
 
     public String getNome() {
@@ -59,21 +60,17 @@ public class Medico implements Serializable{
         this.email = email;
     }
 
-    public Integer getObjespecialidade_codEspecialidade() {
-        return objespecialidade_codEspecialidade;
+    public Especialidade getObjEspecialidade() {
+        return objEspecialidade;
     }
 
-    public void setObjespecialidade_codEspecialidade(Integer objespecialidade_codEspecialidade) {
-        this.objespecialidade_codEspecialidade = objespecialidade_codEspecialidade;
+    public void setObjEspecialidade(Especialidade objEspecialidade) {
+        this.objEspecialidade = objEspecialidade;
     }
 
-    
-
-    
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.codigo);
         return hash;
     }
 
@@ -89,11 +86,28 @@ public class Medico implements Serializable{
             return false;
         }
         final Medico other = (Medico) obj;
-        if (!Objects.equals(this.codigo, other.codigo)) {
+        if (!Objects.equals(this.nome, other.nome)) {
+            return false;
+        }
+        if (!Objects.equals(this.cpf, other.cpf)) {
+            return false;
+        }
+        if (!Objects.equals(this.crm, other.crm)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.codMedico, other.codMedico)) {
+            return false;
+        }
+        if (!Objects.equals(this.objEspecialidade, other.objEspecialidade)) {
             return false;
         }
         return true;
     }
-   
-    
+
+  
+
+
 }
