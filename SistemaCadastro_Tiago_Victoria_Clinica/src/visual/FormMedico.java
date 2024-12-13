@@ -43,9 +43,11 @@ public class FormMedico extends javax.swing.JDialog {
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
             txtCPF.setText("");
-            txtCodigo.setText("");
+            txtCod.setText("");
+            txtCRM.setText("");
+            txtNomeMedico.setText("");
+            txtEmail.setText("");
             
-
         } else {
             btnExcluir.setEnabled(!editando);
         }
@@ -59,7 +61,9 @@ public class FormMedico extends javax.swing.JDialog {
         cbxEspecialidade.setEnabled(editando);
         tblMedico.setEnabled(editando);
         txtNomeMedico.setEnabled(editando);
-        txtCodigo.setEnabled(editando);
+        txtCod.setEnabled(editando);
+        txtCRM.setEnabled(editando);
+        
 
     }
 
@@ -84,12 +88,7 @@ public class FormMedico extends javax.swing.JDialog {
             txtNomeMedico.requestFocus();
             return false;
         }
-         if (cbxEspecialidade.getSelectedIndex() >= 0) {
-            JOptionPane.showMessageDialog(null, "Selecione a especialidade: ");
-            cbxEspecialidade.requestFocus();
-            return false;
-        }
-        
+         
         return true;
         
         }
@@ -139,7 +138,6 @@ public class FormMedico extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCodigo = new javax.swing.JTextField();
         txtCPF = new javax.swing.JTextField();
         cbxEspecialidade = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -148,6 +146,7 @@ public class FormMedico extends javax.swing.JDialog {
         txtCRM = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
+        txtCod = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -273,18 +272,7 @@ public class FormMedico extends javax.swing.JDialog {
 
         jLabel3.setText("Especialidade:");
 
-        txtCodigo.setEditable(false);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigo}"), txtCodigo, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoActionPerformed(evt);
-            }
-        });
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cpf}"), txtCPF, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cpf}"), txtCPF, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEspecialidade, cbxEspecialidade);
@@ -307,6 +295,15 @@ public class FormMedico extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), txtEmail, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigo}"), txtCod, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        txtCod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
         painelCadastro.setLayout(painelCadastroLayout);
         painelCadastroLayout.setHorizontalGroup(
@@ -328,7 +325,7 @@ public class FormMedico extends javax.swing.JDialog {
                     .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxEspecialidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(167, 167, 167))
         );
         painelCadastroLayout.setVerticalGroup(
@@ -338,7 +335,7 @@ public class FormMedico extends javax.swing.JDialog {
                 .addGap(61, 61, 61)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -470,9 +467,9 @@ public class FormMedico extends javax.swing.JDialog {
         trataEdicao(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
-    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+    private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoActionPerformed
+    }//GEN-LAST:event_txtCodActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,7 +545,7 @@ public class FormMedico extends javax.swing.JDialog {
     private javax.swing.JTable tblMedico;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtCRM;
-    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtCod;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNomeMedico;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
