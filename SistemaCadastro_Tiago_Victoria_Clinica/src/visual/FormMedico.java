@@ -13,10 +13,6 @@ import modelo.MedicoDao;
 import modelo.Especialidade;
 import modelo.EspecialidadeDao;
 
-/**
- *
- * @author tulio
- */
 public class FormMedico extends javax.swing.JDialog {
 
     MedicoDao funcionarioDao = new MedicoDao();
@@ -49,6 +45,7 @@ public class FormMedico extends javax.swing.JDialog {
             txtCPF.setText("");
             txtCodMedico.setText("");
             txtCRM.setText("");
+              txtEmail.setText("");
 
         } else {
             btnExcluir.setEnabled(!editando);
@@ -65,6 +62,7 @@ public class FormMedico extends javax.swing.JDialog {
         tblMedico.setEnabled(editando);
         txtNomeMedico.setEnabled(editando);
         txtCodMedico.setEnabled(editando);
+        txtEmail.setEnabled(editando);
     }
 
     public boolean validaCampos() {
@@ -81,6 +79,11 @@ public class FormMedico extends javax.swing.JDialog {
         }
         if (!(txtCRM.getText().length() > 0)) {
             JOptionPane.showMessageDialog(null, "Informe o CRM do Médico:");
+            txtNomeMedico.requestFocus();
+            return false;
+        }
+        if (!(txtEmail.getText().length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Informe o email do Médico:");
             txtNomeMedico.requestFocus();
             return false;
         }
@@ -143,10 +146,10 @@ public class FormMedico extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         txtNomeMedico = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskCRM = null;  try{  maskCRM = new javax.swing.text.MaskFormatter("########");  maskCRM.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        javax.swing.text.MaskFormatter maskCRM = null;  try{  maskCRM = new javax.swing.text.MaskFormatter("########/**");  maskCRM.setPlaceholderCharacter('_');  }catch (Exception e){    }
         txtCRM = new javax.swing.JFormattedTextField(maskCRM);
         jLabel6 = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JFormattedTextField();
+        txtEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -303,7 +306,7 @@ public class FormMedico extends javax.swing.JDialog {
 
         jLabel6.setText("Email:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), txtEmail, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), txtEmail, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
@@ -331,13 +334,17 @@ public class FormMedico extends javax.swing.JDialog {
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 259, Short.MAX_VALUE)
                                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtCRM, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                                        .addComponent(txtEmail))
-                                    .addComponent(txtCodMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(painelCadastroLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCRM, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCodMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(painelCadastroLayout.createSequentialGroup()
+                                        .addGap(259, 259, 259)
+                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(126, 126, 126))))
         );
         painelCadastroLayout.setVerticalGroup(
@@ -360,11 +367,11 @@ public class FormMedico extends javax.swing.JDialog {
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cbxCidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -558,7 +565,7 @@ public class FormMedico extends javax.swing.JDialog {
     private javax.swing.JTextField txtCPF;
     private javax.swing.JFormattedTextField txtCRM;
     private javax.swing.JTextField txtCodMedico;
-    private javax.swing.JFormattedTextField txtEmail;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNomeMedico;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables

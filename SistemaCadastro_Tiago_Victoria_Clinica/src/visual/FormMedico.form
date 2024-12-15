@@ -249,14 +249,20 @@
                                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace pref="259" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtNomeMedico" min="-2" pref="244" max="-2" attributes="0"/>
-                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="txtCRM" alignment="0" pref="242" max="32767" attributes="0"/>
-                                              <Component id="txtEmail" alignment="1" max="32767" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="txtNomeMedico" min="-2" pref="244" max="-2" attributes="0"/>
+                                                  <Component id="txtCRM" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
+                                                  <Component id="txtCodMedico" min="-2" pref="31" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
-                                          <Component id="txtCodMedico" min="-2" pref="31" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="259" max="-2" attributes="0"/>
+                                              <Component id="txtEmail" min="-2" pref="244" max="-2" attributes="0"/>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
@@ -290,12 +296,12 @@
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtCRM" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="41" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtEmail" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel6" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="47" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel3" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="cbxCidade" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -433,7 +439,7 @@
               </BindingProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskCRM)"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCRM = null;  try{  maskCRM = new javax.swing.text.MaskFormatter(&quot;########&quot;);  maskCRM.setPlaceholderCharacter(&apos;_&apos;);  }catch (Exception e){    }"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskCRM = null;  try{  maskCRM = new javax.swing.text.MaskFormatter(&quot;########/**&quot;);  maskCRM.setPlaceholderCharacter(&apos;_&apos;);  }catch (Exception e){    }"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
@@ -441,9 +447,11 @@
                 <Property name="text" type="java.lang.String" value="Email:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JFormattedTextField" name="txtEmail">
+            <Component class="javax.swing.JTextField" name="txtEmail">
               <BindingProperties>
-                <BindingProperty name="value" source="tblMedico" sourcePath="${selectedElement.email}" target="txtEmail" targetPath="value" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="text" source="tblMedico" sourcePath="${selectedElement.email}" target="txtEmail" targetPath="text" updateStrategy="0" immediately="false">
+                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+                </BindingProperty>
               </BindingProperties>
             </Component>
           </SubComponents>
