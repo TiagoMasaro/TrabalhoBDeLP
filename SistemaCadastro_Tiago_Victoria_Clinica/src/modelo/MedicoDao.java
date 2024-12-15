@@ -24,7 +24,7 @@ public class MedicoDao { // Data Acess Object padrão
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Medico objMedico = new Medico();
-                objMedico.setCodigo(rs.getInt("codMedico"));
+                objMedico.setCodMedico(rs.getInt("codMedico"));
                 objMedico.setNome(rs.getString("nomeMedico"));
                 objMedico.setCpf(rs.getString("cpfMedico"));
               objMedico.setCrm(rs.getString("crmMedico"));
@@ -70,7 +70,7 @@ public class MedicoDao { // Data Acess Object padrão
             pst.setString(3, objMedico.getCrm());
             pst.setString(4, objMedico.getEmail());
             pst.setInt(5, objMedico.getObjEspecialidade().getCodEspecialidade());
-            pst.setInt(6, objMedico.getCodigo());
+            pst.setInt(6, objMedico.getCodMedico());
             if (pst.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Médico alterado com sucesso!");
                 return true;
@@ -88,7 +88,7 @@ public class MedicoDao { // Data Acess Object padrão
         String sql = "delete from medicos where codMedico=?";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-            pst.setInt(1, objMedico.getCodigo());
+            pst.setInt(1, objMedico.getCodMedico());
             if (pst.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Médico excluído com sucesso!");
                 return true;
@@ -103,7 +103,7 @@ public class MedicoDao { // Data Acess Object padrão
     }
 
     public boolean salvar(Medico obj) {
-        if (obj.getCodigo() == null) {
+        if (obj.getCodMedico()== null) {
             return incluir(obj);
         } else {
             return alterar(obj);
@@ -119,7 +119,7 @@ public class MedicoDao { // Data Acess Object padrão
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery(); 
                while(rs.next()){
-                   obj.setCodigo(rs.getInt("codMedico"));
+                   obj.setCodMedico(rs.getInt("codMedico"));
                    obj.setNome(rs.getNString("nomeMedico"));
                    obj.setCpf(rs.getNString("cpfMedico"));
                    obj.setCrm(rs.getNString("crmMedico"));

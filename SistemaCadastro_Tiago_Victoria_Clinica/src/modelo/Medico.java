@@ -20,14 +20,15 @@ public class Medico implements Serializable{
     private String nome, cpf, crm, email;
     private Especialidade objEspecialidade;
 
-    public Integer getCodigo() {
+    public Integer getCodMedico() {
         return codMedico;
     }
 
-    public void setCodigo(Integer codigo) {
-        this.codMedico = codigo;
+    public void setCodMedico(Integer codMedico) {
+        this.codMedico = codMedico;
     }
 
+   
     public String getNome() {
         return nome;
     }
