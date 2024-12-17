@@ -9,32 +9,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class AtendimentoDao {
-
+public class AgendamentoDao {
 
     MedicoDao medicoDao = new MedicoDao();
     PacientesDao pacienteDao = new PacientesDao();
-    
 
-    public List<Atendimento> getLista() {
-        String sql = "select * from atendimento";
-        List<Atendimento> lista = new ArrayList<>();
+    public List<Agendamento> getLista() {
+        String sql = "select * from agendamentos";
+        List<Agendamento> lista = new ArrayList<>();
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Atendimento obj = new Atendimento();
-                obj.setCodAtendimento(rs.getInt("codAtendimento"));
-                obj.setTipoPagamento(rs.getString("tipoPagamento"));
-                obj.setTipoPagamento(rs.getString("dataAtendimento"));
-                obj.setTipoPagamento(rs.getString("dataPagamento"));
+                Agendamento obj = new Agendamento();
+                obj.setCodigo(rs.getInt("codAgendamentos"));
+                obj.setDatahora(rs.getString("dataHora"));
+
                 obj.setObjMedico(medicoDao.localizar(rs.getInt("medicos_codMedico")));
                 obj.setObjPaciente(pacienteDao.localizar(rs.getInt("pacientes_codPaciente")));
-                
+
                 lista.add(obj);
             }
         } catch (SQLException e) {
@@ -43,8 +39,8 @@ public class AtendimentoDao {
         return lista;
     }
 
-    public boolean salvar(Atendimento obj) {
-        if (obj.getCodAtendimento()== null) {
+    public boolean salvar(Agendamento obj) {
+        if (obj.getCodigo() == null) {
             return incluir(obj);
         } else {
             return alterar(obj);
@@ -52,25 +48,20 @@ public class AtendimentoDao {
 
     }
 
-    public boolean incluir(Atendimento obj) {
-        String sql = "insert into atendimento (pacientes_codPaciente,medicos_codMedico,dataAtendimento,dataPagamento,tipoPagamento) values(?,?,?,?,?)";
+    public boolean incluir(Agendamento obj) {
+        String sql = "insert into agendamentos (dataHora, pacientes_codPaciente, medicos_codMedico) values(?,?,?)";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-            
-             pst.setInt(1, obj.getObjPaciente().getCodigo());
-            pst.setInt(2, obj.getObjMedico().getCodMedico());
-            pst.setString(3,obj.getDataAtendimento());
-            pst.setString(4,obj.getDataPagamento());
-              pst.setString(5, obj.getTipoPagamento());
-            
-          
-           
-            
+
+            pst.setString(1, obj.getDatahora());
+            pst.setInt(2, obj.getObjPaciente().getCodigo());
+            pst.setInt(3, obj.getObjMedico().getCodMedico());
+
             if (pst.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Atendimento cadastrado");
+                JOptionPane.showMessageDialog(null, "Agendamento realizado!");
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Atendiemnto não cadastrado");
+                JOptionPane.showMessageDialog(null, "Agendamento não realizado!");
                 return false;
             }
         } catch (SQLException e) {
@@ -80,22 +71,20 @@ public class AtendimentoDao {
         return false;
     }
 
-    public boolean alterar(Atendimento obj) {
-        String sql = "update atendimento set pacientes_codPaciente=?, medicos_codMedico=?, dataAtendimento=?, dataPagamento=?, tipoPagamento=? where codAtendimento=?";
+    public boolean alterar(Agendamento obj) {
+        String sql = "update agendamentos set pacientes_codPaciente=?, medicos_codMedico=?, dataHora=? where codAgendamentos=?";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-           pst.setInt(1, obj.getObjPaciente().getCodigo());
-            pst.setInt(2, obj.getObjMedico().getCodMedico());
-           pst.setString(3,obj.getDataAtendimento());
-            pst.setString(4,obj.getDataPagamento());
-              pst.setString(5, obj.getTipoPagamento());
-              pst.setInt(6, obj.getCodAtendimento());
-              
+
+            pst.setString(1, obj.getDatahora());
+            pst.setInt(2, obj.getObjPaciente().getCodigo());
+            pst.setInt(3, obj.getObjMedico().getCodMedico());
+
             if (pst.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Atendimento alterado");
+                JOptionPane.showMessageDialog(null, "Agendamento alterado");
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Atendimento não alterado");
+                JOptionPane.showMessageDialog(null, "Agendamento não alterado");
                 return false;
             }
         } catch (SQLException e) {
@@ -105,16 +94,16 @@ public class AtendimentoDao {
         return false;
     }
 
-    public boolean remover(Atendimento obj) {
-        String sql = "delete from atendimento where codigo=?";
+    public boolean remover(Agendamento obj) {
+        String sql = "delete from agendamentos where codigo=?";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-            pst.setInt(1, obj.getCodAtendimento());
+            pst.setInt(1, obj.getCodigo());
             if (pst.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Atendimento excluído");
+                JOptionPane.showMessageDialog(null, "Agendamento excluído");
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Atendimento não excluído");
+                JOptionPane.showMessageDialog(null, "Agendamento não excluído");
                 return false;
             }
         } catch (SQLException e) {
@@ -123,9 +112,5 @@ public class AtendimentoDao {
         }
         return false;
     }
-
-    
 
 }
-
-

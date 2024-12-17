@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-import modelo.Atendimento;
-import modelo.AtendimentoDao;
+import modelo.Agendamento;
+import modelo.AgendamentoDao;
 
 import modelo.Pacientes;
 import modelo.PacientesDao;
@@ -15,20 +15,20 @@ import modelo.Medico;
 import modelo.MedicoDao;
 
 
-public class FormAtendimento extends javax.swing.JDialog {
+public class FormAgendamento extends javax.swing.JDialog {
     
-    AtendimentoDao objAtendimento = new AtendimentoDao();
+    AgendamentoDao objAtendimento = new AgendamentoDao();
     MedicoDao objMedico = new MedicoDao();
     PacientesDao objPaciente = new PacientesDao();
     
     
     public void atualizaTabela() {
-        listAtendimento.clear();// limpa a lista
-        listAtendimento.addAll(objAtendimento.getLista());
-        int linha = listAtendimento.size() - 1;
+        listAgendamento.clear();// limpa a lista
+        listAgendamento.addAll(objAtendimento.getLista());
+        int linha = listAgendamento.size() - 1;
         if (linha >= 0) {
-            tblAtendimento.setRowSelectionInterval(linha, linha);
-            tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, linha, true));
+            tblAgendamento.setRowSelectionInterval(linha, linha);
+            tblAgendamento.scrollRectToVisible(tblAgendamento.getCellRect(linha, linha, true));
         }
 
     }
@@ -37,7 +37,7 @@ public class FormAtendimento extends javax.swing.JDialog {
         btnCancelar.setEnabled(editando);
         btnSalvar.setEnabled(editando);
         btnEditar.setEnabled(!editando);
-        int linha = listAtendimento.size() - 1;
+        int linha = listAgendamento.size() - 1;
         if (linha < 0) {
             btnPrimeiro.setEnabled(false);
             btnProximo.setEnabled(false);
@@ -46,9 +46,7 @@ public class FormAtendimento extends javax.swing.JDialog {
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
            txtCodAtendimento.setText("");
-           txtDataAten.setText("");
-           txtDataPag.setText("");
-           txtMet.setText("");
+          
 
         } else {
             btnExcluir.setEnabled(!editando);
@@ -62,30 +60,21 @@ public class FormAtendimento extends javax.swing.JDialog {
         
        cbxMedico.setEnabled(editando);
         cbxPaciente.setEnabled(editando);
-        txtDataAten.setEnabled(editando);
-         txtDataPag.setEnabled(editando);
-        tblAtendimento.setEnabled(editando);
+       
+        tblAgendamento.setEnabled(editando);
         txtCodAtendimento.setEnabled(editando);
        
     }
 
     public boolean validaCampos() {
-        if (!(txtDataAten.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe a data do atendimento: ");
-            txtDataAten.requestFocus();
+        if (!(txtDataHora.getText().length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Informe a data e o horário do agendamento: ");
+            txtDataHora.requestFocus();
             return false;
         }
         
-        if (!(txtDataPag.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe a data do pagamento: ");
-            txtDataPag.requestFocus();
-            return false;
-        }
-        if (!(txtMet.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe a forma de pagamento: ");
-            txtMet.requestFocus();
-            return false;
-        }
+        
+        
         
         if (!(cbxMedico.getSelectedIndex() >= 0)) {
             JOptionPane.showMessageDialog(null, "Selecione um médico:");
@@ -101,7 +90,7 @@ public class FormAtendimento extends javax.swing.JDialog {
   
         return true;
     } 
-    public FormAtendimento(java.awt.Frame parent, boolean modal) {
+    public FormAgendamento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizaTabela();
@@ -124,7 +113,7 @@ public class FormAtendimento extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        listAtendimento = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Atendimento>())
+        listAgendamento = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Agendamento>())
         ;
         listMedico = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Medico>())
         ;
@@ -139,7 +128,7 @@ public class FormAtendimento extends javax.swing.JDialog {
         painelGuiaAbas = new javax.swing.JTabbedPane();
         painelListagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblAtendimento = new javax.swing.JTable();
+        tblAgendamento = new javax.swing.JTable();
         painelCadastro = new javax.swing.JPanel();
         painelAcoes = new javax.swing.JPanel();
         btnNovo = new javax.swing.JButton();
@@ -149,18 +138,13 @@ public class FormAtendimento extends javax.swing.JDialog {
         btnExcluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         txtCodAtendimento = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         dataAten = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDataAtendimento = null;  try{  maskDataAtendimento = new javax.swing.text.MaskFormatter("##/##/####");  maskDataAtendimento.setPlaceholderCharacter('_');  }catch (Exception e){    }
-        txtDataAten = new javax.swing.JFormattedTextField(maskDataAtendimento);
-        jLabel6 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDataPagamento = null;  try{  maskDataPagamento = new javax.swing.text.MaskFormatter("##/##/####");  maskDataPagamento.setPlaceholderCharacter('_');  }catch (Exception e){    }
-        txtDataPag = new javax.swing.JFormattedTextField(maskDataPagamento);
-        txtMet = new javax.swing.JTextField();
         cbxMedico = new javax.swing.JComboBox<>();
         cbxPaciente = new javax.swing.JComboBox<>();
+        javax.swing.text.MaskFormatter maskDataHora = null;  try{  maskDataHora = new javax.swing.text.MaskFormatter("##/##/####  ##:##");  maskDataHora.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        txtDataHora = new javax.swing.JFormattedTextField(maskDataHora);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -210,28 +194,22 @@ public class FormAtendimento extends javax.swing.JDialog {
 
         painelListagem.setLayout(new java.awt.BorderLayout());
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAtendimento, tblAtendimento);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codAtendimento}"));
-        columnBinding.setColumnName("Atendimento");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAgendamento, tblAgendamento);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codigo}"));
+        columnBinding.setColumnName("Agendamento");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objPaciente}"));
-        columnBinding.setColumnName("Paciente");
-        columnBinding.setColumnClass(modelo.Pacientes.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objMedico}"));
         columnBinding.setColumnName("Medico");
         columnBinding.setColumnClass(modelo.Medico.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataAtendimento}"));
-        columnBinding.setColumnName("Data Atendimento");
-        columnBinding.setColumnClass(java.util.Calendar.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataPagamento}"));
-        columnBinding.setColumnName("Data Pagamento");
-        columnBinding.setColumnClass(java.util.Calendar.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipoPagamento}"));
-        columnBinding.setColumnName("Método");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objPaciente}"));
+        columnBinding.setColumnName("Paciente");
+        columnBinding.setColumnClass(modelo.Pacientes.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${datahora}"));
+        columnBinding.setColumnName("Data e Hora");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(tblAtendimento);
+        jScrollPane1.setViewportView(tblAgendamento);
 
         painelListagem.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -284,72 +262,48 @@ public class FormAtendimento extends javax.swing.JDialog {
 
         jLabel2.setText("Paciente:");
 
-        jLabel3.setText("Método de pagamento:");
-
         txtCodAtendimento.setEditable(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codAtendimento}"), txtCodAtendimento, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAgendamento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codigo}"), txtCodAtendimento, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         jLabel4.setText("Médico:");
 
-        dataAten.setText("Data do atendimento:");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataAtendimento}"), txtDataAten, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        jLabel6.setText("Data do pagamento:");
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataPagamento}"), txtDataPag, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoPagamento}"), txtMet, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
+        dataAten.setText("Data e hora: ");
 
         org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMedico, cbxMedico);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objMedico}"), cbxMedico, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAgendamento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objMedico}"), cbxMedico, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPaciente, cbxPaciente);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}"), cbxPaciente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAgendamento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}"), cbxPaciente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAgendamento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.datahora}"), txtDataHora, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
         painelCadastro.setLayout(painelCadastroLayout);
         painelCadastroLayout.setHorizontalGroup(
             painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(painelAcoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(painelAcoes, javax.swing.GroupLayout.DEFAULT_SIZE, 794, Short.MAX_VALUE)
             .addGroup(painelCadastroLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(painelCadastroLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap())
-                    .addGroup(painelCadastroLayout.createSequentialGroup()
-                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(dataAten)
-                            .addComponent(jLabel6))
-                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(painelCadastroLayout.createSequentialGroup()
-                                .addGap(259, 259, 259)
-                                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 126, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCadastroLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDataAten, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(cbxPaciente, javax.swing.GroupLayout.Alignment.LEADING, 0, 116, Short.MAX_VALUE)
-                                        .addComponent(cbxMedico, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(128, 128, 128))))))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(dataAten))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 307, Short.MAX_VALUE)
+                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbxPaciente, javax.swing.GroupLayout.Alignment.LEADING, 0, 116, Short.MAX_VALUE)
+                        .addComponent(cbxMedico, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtDataHora, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(239, 239, 239))
         );
         painelCadastroLayout.setVerticalGroup(
             painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,16 +324,8 @@ public class FormAtendimento extends javax.swing.JDialog {
                 .addGap(33, 33, 33)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dataAten)
-                    .addComponent(txtDataAten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
+                    .addComponent(txtDataHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
 
         painelGuiaAbas.addTab("Cadastro", painelCadastro);
@@ -412,17 +358,17 @@ public class FormAtendimento extends javax.swing.JDialog {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
-        listAtendimento.add(new Atendimento());// instancia o objeto Funcionario e cria uma linha na tabela
-        int linha = listAtendimento.size() - 1;
-        tblAtendimento.setRowSelectionInterval(linha, linha);
+        listAgendamento.add(new Agendamento());// instancia o objeto Funcionario e cria uma linha na tabela
+        int linha = listAgendamento.size() - 1;
+        tblAgendamento.setRowSelectionInterval(linha, linha);
         trataEdicao(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         if (validaCampos()) {
-            int linhaSelecionada = tblAtendimento.getSelectedRow();
-            Atendimento obj = listAtendimento.get(linhaSelecionada);
+            int linhaSelecionada = tblAgendamento.getSelectedRow();
+            Agendamento obj = listAgendamento.get(linhaSelecionada);
             objAtendimento.salvar(obj);
             atualizaTabela();
             trataEdicao(false);
@@ -446,8 +392,8 @@ public class FormAtendimento extends javax.swing.JDialog {
         int opcao = JOptionPane.showOptionDialog(null, "Confirma a exclusão?", "Pergunta", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não"}, "Sim");
         if (opcao == 0) {
-            int linhaSelecionada = tblAtendimento.getSelectedRow();
-            Atendimento obj = listAtendimento.get(linhaSelecionada);
+            int linhaSelecionada = tblAgendamento.getSelectedRow();
+            Agendamento obj = listAgendamento.get(linhaSelecionada);
             objAtendimento.remover(obj);
             atualizaTabela();
             trataEdicao(false);
@@ -456,36 +402,36 @@ public class FormAtendimento extends javax.swing.JDialog {
 
     private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
         // TODO add your handling code here:
-        tblAtendimento.setRowSelectionInterval(0, 0);
-        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(0, 0, true));
+        tblAgendamento.setRowSelectionInterval(0, 0);
+        tblAgendamento.scrollRectToVisible(tblAgendamento.getCellRect(0, 0, true));
     }//GEN-LAST:event_btnPrimeiroActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
         // TODO add your handling code here:
-        int linha = tblAtendimento.getSelectedRow();
+        int linha = tblAgendamento.getSelectedRow();
         if ((linha - 1) >= 0) {
             linha--;
         }
-        tblAtendimento.setRowSelectionInterval(linha, linha);
-        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
+        tblAgendamento.setRowSelectionInterval(linha, linha);
+        tblAgendamento.scrollRectToVisible(tblAgendamento.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
         // TODO add your handling code here:
-        int linha = tblAtendimento.getSelectedRow();
-        if ((linha + 1) <= tblAtendimento.getRowCount() - 1) {
+        int linha = tblAgendamento.getSelectedRow();
+        if ((linha + 1) <= tblAgendamento.getRowCount() - 1) {
             linha++;
         }
-        tblAtendimento.setRowSelectionInterval(linha, linha);
-        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
+        tblAgendamento.setRowSelectionInterval(linha, linha);
+        tblAgendamento.scrollRectToVisible(tblAgendamento.getCellRect(linha, 0, true));
 
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
         // TODO add your handling code here:
-        int linha = tblAtendimento.getRowCount() - 1;
-        tblAtendimento.setRowSelectionInterval(linha, linha);
-        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
+        int linha = tblAgendamento.getRowCount() - 1;
+        tblAgendamento.setRowSelectionInterval(linha, linha);
+        tblAgendamento.scrollRectToVisible(tblAgendamento.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnUltimoActionPerformed
 
     /**
@@ -505,14 +451,22 @@ public class FormAtendimento extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAgendamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAgendamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAgendamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAgendamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -525,7 +479,7 @@ public class FormAtendimento extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FormAtendimento dialog = new FormAtendimento(new javax.swing.JFrame(), true);
+                FormAgendamento dialog = new FormAgendamento(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -553,11 +507,9 @@ public class FormAtendimento extends javax.swing.JDialog {
     private javax.swing.JLabel dataAten;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.util.List<Atendimento> listAtendimento;
+    private java.util.List<Agendamento> listAgendamento;
     private java.util.List<Medico> listMedico;
     private java.util.List<Pacientes> listPaciente;
     private javax.swing.JPanel painelAcoes;
@@ -565,11 +517,9 @@ public class FormAtendimento extends javax.swing.JDialog {
     private javax.swing.JTabbedPane painelGuiaAbas;
     private javax.swing.JPanel painelListagem;
     private javax.swing.JPanel painelNavegacao;
-    private javax.swing.JTable tblAtendimento;
+    private javax.swing.JTable tblAgendamento;
     private javax.swing.JTextField txtCodAtendimento;
-    private javax.swing.JFormattedTextField txtDataAten;
-    private javax.swing.JTextField txtDataPag;
-    private javax.swing.JTextField txtMet;
+    private javax.swing.JTextField txtDataHora;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,11 +2,11 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
-    <Component class="java.util.List" name="listAtendimento">
+    <Component class="java.util.List" name="listAgendamento">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList&lt;Atendimento&gt;())&#xa;"/>
-        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="FormAtendimento_listAtendimento"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Atendimento&gt;"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList&lt;Agendamento&gt;())&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="FormAgendamento_listAgendamento"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Agendamento&gt;"/>
       </AuxValues>
     </Component>
     <Component class="java.util.List" name="listMedico">
@@ -144,20 +144,10 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="tblAtendimento">
+                <Component class="javax.swing.JTable" name="tblAgendamento">
                   <Properties>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
@@ -185,29 +175,21 @@
                     </Property>
                   </Properties>
                   <BindingProperties>
-                    <BindingProperty name="elements" source="listAtendimento" target="tblAtendimento" targetPath="elements" updateStrategy="0" immediately="true">
-                      <Subbinding sourcePath="${codAtendimento}">
-                        <BindingParameter name="NAME" value="Atendimento"/>
+                    <BindingProperty name="elements" source="listAgendamento" target="tblAgendamento" targetPath="elements" updateStrategy="0" immediately="true">
+                      <Subbinding sourcePath="${codigo}">
+                        <BindingParameter name="NAME" value="Agendamento"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Integer.class"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${objPaciente}">
-                        <BindingParameter name="NAME" value="Paciente"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="modelo.Pacientes.class"/>
                       </Subbinding>
                       <Subbinding sourcePath="${objMedico}">
                         <BindingParameter name="NAME" value="Medico"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="modelo.Medico.class"/>
                       </Subbinding>
-                      <Subbinding sourcePath="${dataAtendimento}">
-                        <BindingParameter name="NAME" value="Data Atendimento"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Calendar.class"/>
+                      <Subbinding sourcePath="${objPaciente}">
+                        <BindingParameter name="NAME" value="Paciente"/>
+                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="modelo.Pacientes.class"/>
                       </Subbinding>
-                      <Subbinding sourcePath="${dataPagamento}">
-                        <BindingParameter name="NAME" value="Data Pagamento"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Calendar.class"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${tipoPagamento}">
-                        <BindingParameter name="NAME" value="M&#xe9;todo"/>
+                      <Subbinding sourcePath="${datahora}">
+                        <BindingParameter name="NAME" value="Data e Hora"/>
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>
                     </BindingProperty>
@@ -229,46 +211,25 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="painelAcoes" alignment="0" max="32767" attributes="0"/>
+                  <Component id="painelAcoes" alignment="0" pref="794" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="dataAten" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="-2" pref="259" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtMet" min="-2" pref="244" max="-2" attributes="0"/>
-                                          <Component id="txtDataPag" min="-2" pref="244" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="126" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtDataAten" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
-                                          <Component id="txtCodAtendimento" min="-2" pref="31" max="-2" attributes="0"/>
-                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="cbxPaciente" alignment="0" pref="116" max="32767" attributes="0"/>
-                                              <Component id="cbxMedico" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dataAten" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace pref="307" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtCodAtendimento" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="cbxPaciente" alignment="0" pref="116" max="32767" attributes="0"/>
+                              <Component id="cbxMedico" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="txtDataHora" min="-2" pref="131" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="239" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -294,19 +255,9 @@
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="dataAten" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtDataAten" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtDataHora" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="47" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtDataPag" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtMet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <EmptySpace pref="164" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -378,17 +329,12 @@
                 <Property name="text" type="java.lang.String" value="Paciente:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel3">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="M&#xe9;todo de pagamento:"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JTextField" name="txtCodAtendimento">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="text" source="tblAtendimento" sourcePath="${selectedElement.codAtendimento}" target="txtCodAtendimento" targetPath="text" updateStrategy="0" immediately="false">
+                <BindingProperty name="text" source="tblAgendamento" sourcePath="${selectedElement.codigo}" target="txtCodAtendimento" targetPath="text" updateStrategy="0" immediately="false">
                   <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
                 </BindingProperty>
               </BindingProperties>
@@ -400,45 +346,13 @@
             </Component>
             <Component class="javax.swing.JLabel" name="dataAten">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Data do atendimento:"/>
+                <Property name="text" type="java.lang.String" value="Data e hora: "/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JFormattedTextField" name="txtDataAten">
-              <BindingProperties>
-                <BindingProperty name="value" source="tblAtendimento" sourcePath="${selectedElement.dataAtendimento}" target="txtDataAten" targetPath="value" updateStrategy="0" immediately="false"/>
-              </BindingProperties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskDataAtendimento)"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskDataAtendimento = null;  try{  maskDataAtendimento = new javax.swing.text.MaskFormatter(&quot;##/##/####&quot;);  maskDataAtendimento.setPlaceholderCharacter(&apos;_&apos;);  }catch (Exception e){    }"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel6">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Data do pagamento:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtDataPag">
-              <BindingProperties>
-                <BindingProperty name="text" source="tblAtendimento" sourcePath="${selectedElement.dataPagamento}" target="txtDataPag" targetPath="text" updateStrategy="0" immediately="false">
-                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-                </BindingProperty>
-              </BindingProperties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskDataPagamento)"/>
-                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskDataPagamento = null;  try{  maskDataPagamento = new javax.swing.text.MaskFormatter(&quot;##/##/####&quot;);  maskDataPagamento.setPlaceholderCharacter(&apos;_&apos;);  }catch (Exception e){    }"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtMet">
-              <BindingProperties>
-                <BindingProperty name="text" source="tblAtendimento" sourcePath="${selectedElement.tipoPagamento}" target="txtMet" targetPath="text" updateStrategy="0" immediately="false">
-                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-                </BindingProperty>
-              </BindingProperties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbxMedico">
               <BindingProperties>
                 <BindingProperty name="elements" source="listMedico" target="cbxMedico" targetPath="elements" updateStrategy="0" immediately="false"/>
-                <BindingProperty name="selectedItem" source="tblAtendimento" sourcePath="${selectedElement.objMedico}" target="cbxMedico" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="selectedItem" source="tblAgendamento" sourcePath="${selectedElement.objMedico}" target="cbxMedico" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
               </BindingProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -447,10 +361,21 @@
             <Component class="javax.swing.JComboBox" name="cbxPaciente">
               <BindingProperties>
                 <BindingProperty name="elements" source="listPaciente" target="cbxPaciente" targetPath="elements" updateStrategy="0" immediately="false"/>
-                <BindingProperty name="selectedItem" source="tblAtendimento" sourcePath="${selectedElement.objPaciente}" target="cbxPaciente" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="selectedItem" source="tblAgendamento" sourcePath="${selectedElement.objPaciente}" target="cbxPaciente" targetPath="selectedItem" updateStrategy="0" immediately="false"/>
               </BindingProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtDataHora">
+              <BindingProperties>
+                <BindingProperty name="text" source="tblAgendamento" sourcePath="${selectedElement.datahora}" target="txtDataHora" targetPath="text" updateStrategy="0" immediately="false">
+                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+                </BindingProperty>
+              </BindingProperties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskDataHora)"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskDataHora = null;  try{  maskDataHora = new javax.swing.text.MaskFormatter(&quot;##/##/####  ##:##&quot;);  maskDataHora.setPlaceholderCharacter(&apos;_&apos;);  }catch (Exception e){    }"/>
               </AuxValues>
             </Component>
           </SubComponents>

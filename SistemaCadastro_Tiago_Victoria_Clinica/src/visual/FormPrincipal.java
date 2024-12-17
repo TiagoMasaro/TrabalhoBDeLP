@@ -38,6 +38,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         menuCargoFuncionario = new javax.swing.JMenuItem();
         menuMedico = new javax.swing.JMenuItem();
         Atendimentos = new javax.swing.JMenuItem();
+        Agendamentos = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         menuSobre = new javax.swing.JMenuItem();
 
@@ -98,6 +99,14 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(Atendimentos);
+
+        Agendamentos.setText("Agendamentos");
+        Agendamentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AgendamentosActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(Agendamentos);
 
         menuBarra.add(menuCadastro);
 
@@ -213,6 +222,15 @@ public class FormPrincipal extends javax.swing.JFrame {
         form.setVisible(true);//visualiza o form
     }//GEN-LAST:event_AtendimentosActionPerformed
 
+    private void AgendamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgendamentosActionPerformed
+        // TODO add your handling code here:
+        FormAgendamento form = new FormAgendamento(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
+        form.setLocationRelativeTo(null);// centro da tela
+        form.setResizable(false);// retira o botão maximizar
+        form.setVisible(true);//visualiza o form
+    }//GEN-LAST:event_AgendamentosActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -249,6 +267,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Agendamentos;
     private javax.swing.JMenuItem Atendimentos;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenuBar menuBarra;
