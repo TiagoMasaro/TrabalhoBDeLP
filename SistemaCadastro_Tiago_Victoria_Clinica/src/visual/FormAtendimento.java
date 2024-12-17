@@ -60,8 +60,8 @@ public class FormAtendimento extends javax.swing.JDialog {
         btnAnterior.setEnabled(!editando);
         btnUltimo.setEnabled(!editando);
         
-       cbxPaciente.setEnabled(editando);
-        cbxMedico.setEnabled(editando);
+       cbxMedico.setEnabled(editando);
+        cbxPaciente.setEnabled(editando);
         txtDataAten.setEnabled(editando);
          txtDataPag.setEnabled(editando);
         tblAtendimento.setEnabled(editando);
@@ -106,8 +106,11 @@ public class FormAtendimento extends javax.swing.JDialog {
         initComponents();
         atualizaTabela();
         trataEdicao(false);
-        listAtendimento.clear();
+        
+        listMedico.clear();
         listMedico.addAll(objMedico.getLista());
+        
+        listPaciente.clear();
         listPaciente.addAll(objPaciente.getLista());
     }
 
@@ -148,28 +151,16 @@ public class FormAtendimento extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtCodAtendimento = new javax.swing.JTextField();
-        cbxMedico = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         dataAten = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDataPag = null;
-        try{
-            maskDataPag = new javax.swing.text.MaskFormatter("##/##/####");
-            maskDataPag.setPlaceholderCharacter('_');
-        }catch(Exception e){
-            System.out.println("Erro na mascara"+e);
-        }
-        txtDataAten = new javax.swing.JFormattedTextField(maskDataPag);
+        javax.swing.text.MaskFormatter maskDataAtendimento = null;  try{  maskDataAtendimento = new javax.swing.text.MaskFormatter("##/##/####");  maskDataAtendimento.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        txtDataAten = new javax.swing.JFormattedTextField(maskDataAtendimento);
         jLabel6 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDataAten = null;
-        try{
-            maskDataAten = new javax.swing.text.MaskFormatter("##/##/####");
-            maskDataAten.setPlaceholderCharacter('_');
-        }catch(Exception e){
-            System.out.println("Erro na mascara"+e);
-        }
-        txtDataPag = new javax.swing.JFormattedTextField(maskDataAten);
-        cbxPaciente = new javax.swing.JComboBox<>();
+        javax.swing.text.MaskFormatter maskDataPagamento = null;  try{  maskDataPagamento = new javax.swing.text.MaskFormatter("##/##/####");  maskDataPagamento.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        txtDataPag = new javax.swing.JFormattedTextField(maskDataPagamento);
         txtMet = new javax.swing.JTextField();
+        cbxMedico = new javax.swing.JComboBox<>();
+        cbxPaciente = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -300,11 +291,6 @@ public class FormAtendimento extends javax.swing.JDialog {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codAtendimento}"), txtCodAtendimento, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPaciente, cbxMedico);
-        bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objMedico}"), cbxMedico, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
-        bindingGroup.addBinding(binding);
-
         jLabel4.setText("Médico:");
 
         dataAten.setText("Data do atendimento:");
@@ -317,13 +303,17 @@ public class FormAtendimento extends javax.swing.JDialog {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataPagamento}"), txtDataPag, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}");
-        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, eLProperty, cbxPaciente);
-        bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}"), cbxPaciente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoPagamento}"), txtMet, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoPagamento}"), txtMet, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMedico, cbxMedico);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objMedico}"), cbxMedico, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPaciente, cbxPaciente);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}"), cbxPaciente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
@@ -335,6 +325,9 @@ public class FormAtendimento extends javax.swing.JDialog {
                 .addGap(41, 41, 41)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelCadastroLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap())
+                    .addGroup(painelCadastroLayout.createSequentialGroup()
                         .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel2)
@@ -343,27 +336,20 @@ public class FormAtendimento extends javax.swing.JDialog {
                             .addComponent(jLabel6))
                         .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(painelCadastroLayout.createSequentialGroup()
+                                .addGap(259, 259, 259)
+                                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 126, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCadastroLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtDataAten, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(128, 128, 128))
-                            .addGroup(painelCadastroLayout.createSequentialGroup()
-                                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(painelCadastroLayout.createSequentialGroup()
-                                        .addGap(261, 261, 261)
-                                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cbxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(painelCadastroLayout.createSequentialGroup()
-                                        .addGap(259, 259, 259)
-                                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 126, Short.MAX_VALUE))))
-                    .addGroup(painelCadastroLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap())))
+                                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(cbxPaciente, javax.swing.GroupLayout.Alignment.LEADING, 0, 116, Short.MAX_VALUE)
+                                        .addComponent(cbxMedico, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(128, 128, 128))))))
         );
         painelCadastroLayout.setVerticalGroup(
             painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,12 +361,12 @@ public class FormAtendimento extends javax.swing.JDialog {
                     .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cbxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dataAten)

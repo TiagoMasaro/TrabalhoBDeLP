@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Atendimento {
     
     private Integer codAtendimento;
-    private Calendar dataPagamento, dataAtendimento;
+    private String dataPagamento, dataAtendimento;
     private String tipoPagamento;
     private Medico objMedico;
     private Pacientes objPaciente;
@@ -28,21 +28,23 @@ public class Atendimento {
         this.codAtendimento = codAtendimento;
     }
 
-    public Calendar getDataPagamento() {
+    public String getDataPagamento() {
         return dataPagamento;
     }
 
-    public void setDataPagamento(Calendar dataPagamento) {
+    public void setDataPagamento(String dataPagamento) {
         this.dataPagamento = dataPagamento;
     }
 
-    public Calendar getDataAtendimento() {
+    public String getDataAtendimento() {
         return dataAtendimento;
     }
 
-    public void setDataAtendimento(Calendar dataAtendimento) {
+    public void setDataAtendimento(String dataAtendimento) {
         this.dataAtendimento = dataAtendimento;
     }
+
+    
 
     public String getTipoPagamento() {
         return tipoPagamento;

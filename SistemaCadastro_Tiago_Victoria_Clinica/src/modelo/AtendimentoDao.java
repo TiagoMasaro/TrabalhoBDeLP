@@ -30,20 +30,8 @@ public class AtendimentoDao {
                 Atendimento obj = new Atendimento();
                 obj.setCodAtendimento(rs.getInt("codAtendimento"));
                 obj.setTipoPagamento(rs.getString("tipoPagamento"));
-                
-                java.sql.Date da = rs.getDate("dataAtendimento");
-                java.sql.Date db = rs.getDate("dataPagamento");
-                
-                Calendar a = Calendar.getInstance();
-                Calendar p = Calendar.getInstance();
-                
-                a.setTime(da);
-                p.setTime(db);
-                
-                obj.setDataAtendimento(a);
-                obj.setDataPagamento(p);
-                
-                
+                obj.setTipoPagamento(rs.getString("dataAtendimento"));
+                obj.setTipoPagamento(rs.getString("dataPagamento"));
                 obj.setObjMedico(medicoDao.localizar(rs.getInt("medicos_codMedico")));
                 obj.setObjPaciente(pacienteDao.localizar(rs.getInt("pacientes_codPaciente")));
                 
@@ -71,8 +59,8 @@ public class AtendimentoDao {
             
              pst.setInt(1, obj.getObjPaciente().getCodigo());
             pst.setInt(2, obj.getObjMedico().getCodMedico());
-            pst.setDate(3, new java.sql.Date(obj.getDataAtendimento().getTimeInMillis()));
-            pst.setDate(4, new java.sql.Date(obj.getDataPagamento().getTimeInMillis()));
+            pst.setString(3,obj.getDataAtendimento());
+            pst.setString(4,obj.getDataPagamento());
               pst.setString(5, obj.getTipoPagamento());
             
           
@@ -98,8 +86,8 @@ public class AtendimentoDao {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
            pst.setInt(1, obj.getObjPaciente().getCodigo());
             pst.setInt(2, obj.getObjMedico().getCodMedico());
-            pst.setDate(3, new java.sql.Date(obj.getDataAtendimento().getTimeInMillis()));
-            pst.setDate(4, new java.sql.Date(obj.getDataPagamento().getTimeInMillis()));
+           pst.setString(3,obj.getDataAtendimento());
+            pst.setString(4,obj.getDataPagamento());
               pst.setString(5, obj.getTipoPagamento());
               pst.setInt(6, obj.getCodAtendimento());
               

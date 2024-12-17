@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class ReceitaDao { // Data Acess Object padrão
     
-    ConverteDataUtilitario converte = new ConverteDataUtilitario();   
+    
     PacientesDao objCidadeDao = new PacientesDao();
     
     public List<Receita> getLista(){

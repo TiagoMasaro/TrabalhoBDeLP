@@ -118,9 +118,11 @@ public class FormPacientes extends javax.swing.JDialog {
         txtCodigo = new javax.swing.JTextField();
         txtNomePaciente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtCpf = new javax.swing.JTextField();
+        javax.swing.text.MaskFormatter maskCPF = null;  try{  maskCPF = new javax.swing.text.MaskFormatter("###.###.###-##");  maskCPF.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        txtCpf = new javax.swing.JFormattedTextField(maskCPF);
         jLabel3 = new javax.swing.JLabel();
-        txtTelefone = new javax.swing.JTextField();
+        javax.swing.text.MaskFormatter maskTelefone = null;  try{  maskTelefone = new javax.swing.text.MaskFormatter("(##) # ####-####");  maskTelefone.setPlaceholderCharacter('_');  }catch (Exception e){    }
+        txtTelefone = new javax.swing.JFormattedTextField(maskTelefone);
         jLabel5 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
 
