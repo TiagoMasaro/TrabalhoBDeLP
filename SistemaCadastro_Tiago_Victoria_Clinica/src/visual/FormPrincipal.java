@@ -37,6 +37,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         menuEspecialidade = new javax.swing.JMenuItem();
         menuCargoFuncionario = new javax.swing.JMenuItem();
         menuMedico = new javax.swing.JMenuItem();
+        Atendimentos = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         menuSobre = new javax.swing.JMenuItem();
 
@@ -89,6 +90,14 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(menuMedico);
+
+        Atendimentos.setText("Atendimento");
+        Atendimentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtendimentosActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(Atendimentos);
 
         menuBarra.add(menuCadastro);
 
@@ -196,6 +205,14 @@ public class FormPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuReceitaActionPerformed
 */
+    private void AtendimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtendimentosActionPerformed
+        FormAtendimento form = new FormAtendimento(this,true);//this: chama deste form e true: modal: sobre o form principal, não deixa acessar o form principal
+        form.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);// não deixa fechar o form pelo x
+        form.setLocationRelativeTo(null);// centro da tela
+        form.setResizable(false);// retira o botão maximizar
+        form.setVisible(true);//visualiza o form
+    }//GEN-LAST:event_AtendimentosActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -232,6 +249,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Atendimentos;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenuBar menuBarra;
     private javax.swing.JMenu menuCadastro;

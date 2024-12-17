@@ -108,7 +108,9 @@ public class Medico implements Serializable{
         return true;
     }
 
-  
+  public String toString(){
+      return this.getNome();
+  }
 
 
 }

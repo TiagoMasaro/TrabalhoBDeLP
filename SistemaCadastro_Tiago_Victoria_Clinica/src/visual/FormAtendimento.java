@@ -1,31 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package visual;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+
+import modelo.Atendimento;
+import modelo.AtendimentoDao;
+
+import modelo.Pacientes;
+import modelo.PacientesDao;
+
 import modelo.Medico;
 import modelo.MedicoDao;
-import modelo.Especialidade;
-import modelo.EspecialidadeDao;
 
-public class FormMedico extends javax.swing.JDialog {
 
-    MedicoDao funcionarioDao = new MedicoDao();
-
-    EspecialidadeDao cidadeDao = new EspecialidadeDao();
-
+public class FormAtendimento extends javax.swing.JDialog {
+    
+    AtendimentoDao objAtendimento = new AtendimentoDao();
+    MedicoDao objMedico = new MedicoDao();
+    PacientesDao objPaciente = new PacientesDao();
+    
+    
     public void atualizaTabela() {
-        listMedico.clear();// limpa a lista
-        listMedico.addAll(funcionarioDao.getLista());
-        int linha = listMedico.size() - 1;
+        listAtendimento.clear();// limpa a lista
+        listAtendimento.addAll(objAtendimento.getLista());
+        int linha = listAtendimento.size() - 1;
         if (linha >= 0) {
-            tblMedico.setRowSelectionInterval(linha, linha);
-            tblMedico.scrollRectToVisible(tblMedico.getCellRect(linha, linha, true));
+            tblAtendimento.setRowSelectionInterval(linha, linha);
+            tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, linha, true));
         }
 
     }
@@ -34,7 +37,7 @@ public class FormMedico extends javax.swing.JDialog {
         btnCancelar.setEnabled(editando);
         btnSalvar.setEnabled(editando);
         btnEditar.setEnabled(!editando);
-        int linha = listMedico.size() - 1;
+        int linha = listAtendimento.size() - 1;
         if (linha < 0) {
             btnPrimeiro.setEnabled(false);
             btnProximo.setEnabled(false);
@@ -42,10 +45,10 @@ public class FormMedico extends javax.swing.JDialog {
             btnUltimo.setEnabled(false);
             btnEditar.setEnabled(false);
             btnExcluir.setEnabled(false);
-            txtCPF.setText("");
-            txtCodMedico.setText("");
-            txtCRM.setText("");
-              txtEmail.setText("");
+           txtCodAtendimento.setText("");
+           txtDataAten.setText("");
+           txtDataPag.setText("");
+           txtMet.setText("");
 
         } else {
             btnExcluir.setEnabled(!editando);
@@ -56,52 +59,56 @@ public class FormMedico extends javax.swing.JDialog {
         btnProximo.setEnabled(!editando);
         btnAnterior.setEnabled(!editando);
         btnUltimo.setEnabled(!editando);
-        txtCPF.setEnabled(editando);
-        cbxCidade.setEnabled(editando);
-        txtCRM.setEnabled(editando);
-        tblMedico.setEnabled(editando);
-        txtNomeMedico.setEnabled(editando);
-        txtCodMedico.setEnabled(editando);
-        txtEmail.setEnabled(editando);
+        
+       cbxPaciente.setEnabled(editando);
+        cbxMedico.setEnabled(editando);
+        txtDataAten.setEnabled(editando);
+         txtDataPag.setEnabled(editando);
+        tblAtendimento.setEnabled(editando);
+        txtCodAtendimento.setEnabled(editando);
+       
     }
 
     public boolean validaCampos() {
-        if (!(txtNomeMedico.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe o nome do médico:");
-            txtNomeMedico.requestFocus();
+        if (!(txtDataAten.getText().length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Informe a data do atendimento: ");
+            txtDataAten.requestFocus();
             return false;
         }
         
-        if (!(txtCPF.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe o CPF do Médico:");
-            txtNomeMedico.requestFocus();
+        if (!(txtDataPag.getText().length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Informe a data do pagamento: ");
+            txtDataPag.requestFocus();
             return false;
         }
-        if (!(txtCRM.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe o CRM do Médico:");
-            txtNomeMedico.requestFocus();
+        if (!(txtMet.getText().length() > 0)) {
+            JOptionPane.showMessageDialog(null, "Informe a forma de pagamento: ");
+            txtMet.requestFocus();
             return false;
         }
-        if (!(txtEmail.getText().length() > 0)) {
-            JOptionPane.showMessageDialog(null, "Informe o email do Médico:");
-            txtNomeMedico.requestFocus();
+        
+        if (!(cbxMedico.getSelectedIndex() >= 0)) {
+            JOptionPane.showMessageDialog(null, "Selecione um médico:");
+            cbxMedico.requestFocus();
             return false;
         }
-        if (!(cbxCidade.getSelectedIndex() >= 0)) {
-            JOptionPane.showMessageDialog(null, "Selecione a especialidade:");
-            cbxCidade.requestFocus();
+         if (!(cbxPaciente.getSelectedIndex() >= 0)) {
+            JOptionPane.showMessageDialog(null, "Selecione um paciente:");
+            cbxPaciente.requestFocus();
             return false;
         }
+        
   
         return true;
     } 
-    public FormMedico(java.awt.Frame parent, boolean modal) {
+    public FormAtendimento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizaTabela();
         trataEdicao(false);
-        listEspecialidade.clear();
-        listEspecialidade.addAll(cidadeDao.getLista());
+        listAtendimento.clear();
+        listMedico.addAll(objMedico.getLista());
+        listPaciente.addAll(objPaciente.getLista());
     }
 
     /**
@@ -114,11 +121,12 @@ public class FormMedico extends javax.swing.JDialog {
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        listAtendimento = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Atendimento>())
+        ;
         listMedico = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Medico>())
         ;
-        listEspecialidade = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Especialidade>())
+        listPaciente = org.jdesktop.observablecollections.ObservableCollections.observableList(new ArrayList<Pacientes>())
         ;
-        jSpinner1 = new javax.swing.JSpinner();
         painelNavegacao = new javax.swing.JPanel();
         btnPrimeiro = new javax.swing.JButton();
         btnAnterior = new javax.swing.JButton();
@@ -128,7 +136,7 @@ public class FormMedico extends javax.swing.JDialog {
         painelGuiaAbas = new javax.swing.JTabbedPane();
         painelListagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblMedico = new javax.swing.JTable();
+        tblAtendimento = new javax.swing.JTable();
         painelCadastro = new javax.swing.JPanel();
         painelAcoes = new javax.swing.JPanel();
         btnNovo = new javax.swing.JButton();
@@ -139,17 +147,29 @@ public class FormMedico extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCodMedico = new javax.swing.JTextField();
-        javax.swing.text.MaskFormatter maskCPF = null;  try{  maskCPF = new javax.swing.text.MaskFormatter("###.###.###-##");  maskCPF.setPlaceholderCharacter('_');  }catch (Exception e){    }
-        txtCPF = new javax.swing.JFormattedTextField(maskCPF);
-        cbxCidade = new javax.swing.JComboBox<>();
+        txtCodAtendimento = new javax.swing.JTextField();
+        cbxMedico = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        txtNomeMedico = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskCRM = null;  try{  maskCRM = new javax.swing.text.MaskFormatter("########/**");  maskCRM.setPlaceholderCharacter('_');  }catch (Exception e){    }
-        txtCRM = new javax.swing.JFormattedTextField(maskCRM);
+        dataAten = new javax.swing.JLabel();
+        javax.swing.text.MaskFormatter maskDataPag = null;
+        try{
+            maskDataPag = new javax.swing.text.MaskFormatter("##/##/####");
+            maskDataPag.setPlaceholderCharacter('_');
+        }catch(Exception e){
+            System.out.println("Erro na mascara"+e);
+        }
+        txtDataAten = new javax.swing.JFormattedTextField(maskDataPag);
         jLabel6 = new javax.swing.JLabel();
-        txtEmail = new javax.swing.JTextField();
+        javax.swing.text.MaskFormatter maskDataAten = null;
+        try{
+            maskDataAten = new javax.swing.text.MaskFormatter("##/##/####");
+            maskDataAten.setPlaceholderCharacter('_');
+        }catch(Exception e){
+            System.out.println("Erro na mascara"+e);
+        }
+        txtDataPag = new javax.swing.JFormattedTextField(maskDataAten);
+        cbxPaciente = new javax.swing.JComboBox<>();
+        txtMet = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cidades");
@@ -199,28 +219,28 @@ public class FormMedico extends javax.swing.JDialog {
 
         painelListagem.setLayout(new java.awt.BorderLayout());
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listMedico, tblMedico);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codMedico}"));
-        columnBinding.setColumnName("Codigo");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listAtendimento, tblAtendimento);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${codAtendimento}"));
+        columnBinding.setColumnName("Atendimento");
         columnBinding.setColumnClass(Integer.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nome}"));
-        columnBinding.setColumnName("Nome");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objEspecialidade}"));
-        columnBinding.setColumnName("Especialidade");
-        columnBinding.setColumnClass(modelo.Especialidade.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${cpf}"));
-        columnBinding.setColumnName("CPF");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${crm}"));
-        columnBinding.setColumnName("CRM");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${email}"));
-        columnBinding.setColumnName("Email");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objPaciente}"));
+        columnBinding.setColumnName("Paciente");
+        columnBinding.setColumnClass(modelo.Pacientes.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${objMedico}"));
+        columnBinding.setColumnName("Medico");
+        columnBinding.setColumnClass(modelo.Medico.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataAtendimento}"));
+        columnBinding.setColumnName("Data Atendimento");
+        columnBinding.setColumnClass(java.util.Calendar.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${dataPagamento}"));
+        columnBinding.setColumnName("Data Pagamento");
+        columnBinding.setColumnClass(java.util.Calendar.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${tipoPagamento}"));
+        columnBinding.setColumnName("Método");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
-        jScrollPane1.setViewportView(tblMedico);
+        jScrollPane1.setViewportView(tblAtendimento);
 
         painelListagem.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -271,42 +291,39 @@ public class FormMedico extends javax.swing.JDialog {
 
         jLabel1.setText("Código:");
 
-        jLabel2.setText("Nome:");
+        jLabel2.setText("Paciente:");
 
-        jLabel3.setText("Especialidade:");
+        jLabel3.setText("Método de pagamento:");
 
-        txtCodMedico.setEditable(false);
+        txtCodAtendimento.setEditable(false);
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codMedico}"), txtCodMedico, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codAtendimento}"), txtCodAtendimento, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.cpf}"), txtCPF, org.jdesktop.beansbinding.BeanProperty.create("text"));
-        bindingGroup.addBinding(binding);
-
-        txtCPF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCPFActionPerformed(evt);
-            }
-        });
-
-        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listEspecialidade, cbxCidade);
+        org.jdesktop.swingbinding.JComboBoxBinding jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, listPaciente, cbxMedico);
         bindingGroup.addBinding(jComboBoxBinding);
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objEspecialidade}"), cbxCidade, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objMedico}"), cbxMedico, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
         bindingGroup.addBinding(binding);
 
-        jLabel4.setText("CPF:");
+        jLabel4.setText("Médico:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.nome}"), txtNomeMedico, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        dataAten.setText("Data do atendimento:");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataAtendimento}"), txtDataAten, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        jLabel5.setText("CRM:");
+        jLabel6.setText("Data do pagamento:");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.crm}"), txtCRM, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.dataPagamento}"), txtDataPag, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
-        jLabel6.setText("Email:");
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}");
+        jComboBoxBinding = org.jdesktop.swingbinding.SwingBindings.createJComboBoxBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, eLProperty, cbxPaciente);
+        bindingGroup.addBinding(jComboBoxBinding);
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.objPaciente}"), cbxPaciente, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblMedico, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.email}"), txtEmail, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, tblAtendimento, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.tipoPagamento}"), txtMet, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
@@ -318,34 +335,35 @@ public class FormMedico extends javax.swing.JDialog {
                 .addGap(41, 41, 41)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelCadastroLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbxCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(279, 279, 279))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelCadastroLayout.createSequentialGroup()
-                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(dataAten)
+                            .addComponent(jLabel6))
+                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(painelCadastroLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(painelCadastroLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
+                                    .addComponent(txtDataAten, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(128, 128, 128))
+                            .addGroup(painelCadastroLayout.createSequentialGroup()
                                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(painelCadastroLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(261, 261, 261)
                                         .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtCRM, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtCodMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(cbxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(painelCadastroLayout.createSequentialGroup()
                                         .addGap(259, 259, 259)
-                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(126, 126, 126))))
+                                        .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 126, Short.MAX_VALUE))))
+                    .addGroup(painelCadastroLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap())))
         );
         painelCadastroLayout.setVerticalGroup(
             painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,28 +372,28 @@ public class FormMedico extends javax.swing.JDialog {
                 .addGap(61, 61, 61)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCodMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNomeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCRM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataAten)
+                    .addComponent(txtDataAten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cbxCidade, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
+                    .addComponent(txtDataPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(painelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtMet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
 
         painelGuiaAbas.addTab("Cadastro", painelCadastro);
@@ -408,19 +426,18 @@ public class FormMedico extends javax.swing.JDialog {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
-        listMedico.add(new Medico());// instancia o objeto Funcionario e cria uma linha na tabela
-        int linha = listMedico.size() - 1;
-        tblMedico.setRowSelectionInterval(linha, linha);
-        txtNomeMedico.requestFocus();
+        listAtendimento.add(new Atendimento());// instancia o objeto Funcionario e cria uma linha na tabela
+        int linha = listAtendimento.size() - 1;
+        tblAtendimento.setRowSelectionInterval(linha, linha);
         trataEdicao(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         if (validaCampos()) {
-            int linhaSelecionada = tblMedico.getSelectedRow();
-            Medico objFuncionario = listMedico.get(linhaSelecionada);
-            funcionarioDao.salvar(objFuncionario);
+            int linhaSelecionada = tblAtendimento.getSelectedRow();
+            Atendimento obj = listAtendimento.get(linhaSelecionada);
+            objAtendimento.salvar(obj);
             atualizaTabela();
             trataEdicao(false);
         }
@@ -443,9 +460,9 @@ public class FormMedico extends javax.swing.JDialog {
         int opcao = JOptionPane.showOptionDialog(null, "Confirma a exclusão?", "Pergunta", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sim", "Não"}, "Sim");
         if (opcao == 0) {
-            int linhaSelecionada = tblMedico.getSelectedRow();
-            Medico objFuncionario = listMedico.get(linhaSelecionada);
-            funcionarioDao.remover(objFuncionario);
+            int linhaSelecionada = tblAtendimento.getSelectedRow();
+            Atendimento obj = listAtendimento.get(linhaSelecionada);
+            objAtendimento.remover(obj);
             atualizaTabela();
             trataEdicao(false);
         }
@@ -453,41 +470,37 @@ public class FormMedico extends javax.swing.JDialog {
 
     private void btnPrimeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeiroActionPerformed
         // TODO add your handling code here:
-        tblMedico.setRowSelectionInterval(0, 0);
-        tblMedico.scrollRectToVisible(tblMedico.getCellRect(0, 0, true));
+        tblAtendimento.setRowSelectionInterval(0, 0);
+        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(0, 0, true));
     }//GEN-LAST:event_btnPrimeiroActionPerformed
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
         // TODO add your handling code here:
-        int linha = tblMedico.getSelectedRow();
+        int linha = tblAtendimento.getSelectedRow();
         if ((linha - 1) >= 0) {
             linha--;
         }
-        tblMedico.setRowSelectionInterval(linha, linha);
-        tblMedico.scrollRectToVisible(tblMedico.getCellRect(linha, 0, true));
+        tblAtendimento.setRowSelectionInterval(linha, linha);
+        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnAnteriorActionPerformed
 
     private void btnProximoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximoActionPerformed
         // TODO add your handling code here:
-        int linha = tblMedico.getSelectedRow();
-        if ((linha + 1) <= tblMedico.getRowCount() - 1) {
+        int linha = tblAtendimento.getSelectedRow();
+        if ((linha + 1) <= tblAtendimento.getRowCount() - 1) {
             linha++;
         }
-        tblMedico.setRowSelectionInterval(linha, linha);
-        tblMedico.scrollRectToVisible(tblMedico.getCellRect(linha, 0, true));
+        tblAtendimento.setRowSelectionInterval(linha, linha);
+        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
 
     }//GEN-LAST:event_btnProximoActionPerformed
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
         // TODO add your handling code here:
-        int linha = tblMedico.getRowCount() - 1;
-        tblMedico.setRowSelectionInterval(linha, linha);
-        tblMedico.scrollRectToVisible(tblMedico.getCellRect(linha, 0, true));
+        int linha = tblAtendimento.getRowCount() - 1;
+        tblAtendimento.setRowSelectionInterval(linha, linha);
+        tblAtendimento.scrollRectToVisible(tblAtendimento.getCellRect(linha, 0, true));
     }//GEN-LAST:event_btnUltimoActionPerformed
-
-    private void txtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCPFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCPFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -506,14 +519,18 @@ public class FormMedico extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormAtendimento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -522,7 +539,7 @@ public class FormMedico extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FormMedico dialog = new FormMedico(new javax.swing.JFrame(), true);
+                FormAtendimento dialog = new FormAtendimento(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -545,28 +562,28 @@ public class FormMedico extends javax.swing.JDialog {
     private javax.swing.JButton btnProximo;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnUltimo;
-    private javax.swing.JComboBox<String> cbxCidade;
+    private javax.swing.JComboBox<String> cbxMedico;
+    private javax.swing.JComboBox<String> cbxPaciente;
+    private javax.swing.JLabel dataAten;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private java.util.List<Especialidade> listEspecialidade;
+    private java.util.List<Atendimento> listAtendimento;
     private java.util.List<Medico> listMedico;
+    private java.util.List<Pacientes> listPaciente;
     private javax.swing.JPanel painelAcoes;
     private javax.swing.JPanel painelCadastro;
     private javax.swing.JTabbedPane painelGuiaAbas;
     private javax.swing.JPanel painelListagem;
     private javax.swing.JPanel painelNavegacao;
-    private javax.swing.JTable tblMedico;
-    private javax.swing.JTextField txtCPF;
-    private javax.swing.JFormattedTextField txtCRM;
-    private javax.swing.JTextField txtCodMedico;
-    private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtNomeMedico;
+    private javax.swing.JTable tblAtendimento;
+    private javax.swing.JTextField txtCodAtendimento;
+    private javax.swing.JFormattedTextField txtDataAten;
+    private javax.swing.JTextField txtDataPag;
+    private javax.swing.JTextField txtMet;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

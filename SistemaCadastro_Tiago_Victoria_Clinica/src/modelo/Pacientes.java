@@ -86,4 +86,8 @@ public class Pacientes implements Serializable{ // padrão java beans
         return true;
     }
 
+    public String toString(){
+        return this.getNome();
+        
+    }
 }

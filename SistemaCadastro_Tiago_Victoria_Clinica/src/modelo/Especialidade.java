@@ -62,7 +62,9 @@ public class Especialidade implements Serializable{ // padrão java beans
     }
 
     
-
+public String toString(){
+    return this.getNomeEspecialidade();
+}
    
 
     
