@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.2.0 - MySQL Community Server - GPL
+-- Versão do servidor:           8.0.36 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
--- HeidiSQL Versão:              12.6.0.6765
+-- HeidiSQL Versão:              12.8.0.6908
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,417 +15,678 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Copiando estrutura do banco de dados para lanchonete_2d_2024
-DROP DATABASE IF EXISTS `lanchonete_2d_2024`;
-CREATE DATABASE IF NOT EXISTS `lanchonete_2d_2024` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `lanchonete_2d_2024`;
+-- Copiando estrutura do banco de dados para tiago_victoria_clinica
+DROP DATABASE IF EXISTS `tiago_victoria_clinica`;
+CREATE DATABASE IF NOT EXISTS `tiago_victoria_clinica` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `tiago_victoria_clinica`;
 
--- Copiando estrutura para tabela lanchonete_2d_2024.auditoria
-DROP TABLE IF EXISTS `auditoria`;
-CREATE TABLE IF NOT EXISTS `auditoria` (
-  `codAuditoria` int NOT NULL AUTO_INCREMENT,
-  `acao` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `tabela` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `dataHora` datetime NOT NULL,
-  `usuario` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`codAuditoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Registrar as ações importantes do sistema. Exemplos: venda de produtos, inserção de marcas, atualização de preços, etc.';
+-- Copiando estrutura para tabela tiago_victoria_clinica.agendamentos
+DROP TABLE IF EXISTS `agendamentos`;
+CREATE TABLE IF NOT EXISTS `agendamentos` (
+  `codAgendamentos` int NOT NULL AUTO_INCREMENT,
+  `dataHora` varchar(50) NOT NULL DEFAULT '',
+  `pacientes_codPaciente` int NOT NULL,
+  `medicos_codMedico` int NOT NULL,
+  PRIMARY KEY (`codAgendamentos`) USING BTREE,
+  KEY `fk_agendamentos_pacientes1_idx` (`pacientes_codPaciente`),
+  KEY `fk_agendamentos_medicos1_idx` (`medicos_codMedico`),
+  CONSTRAINT `FKMedico` FOREIGN KEY (`medicos_codMedico`) REFERENCES `medicos` (`codMedico`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKPaciente` FOREIGN KEY (`pacientes_codPaciente`) REFERENCES `pacientes` (`codPaciente`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.auditoria: ~7 rows (aproximadamente)
-INSERT INTO `auditoria` (`codAuditoria`, `acao`, `tabela`, `dataHora`, `usuario`) VALUES
-	(1, 'Venda de produto', 'itensVenda', '2024-12-04 07:52:05', 'root@localhost'),
-	(2, 'Venda de produto=Fandangos Quantidade vendida=2.00', 'itensVenda', '2024-12-04 08:05:44', 'root@localhost'),
-	(3, 'Devolução de produto= Fandangos Quantidade devolvida= 2.00', 'ItensVenda', '2024-12-05 10:03:17', 'root@localhost'),
-	(4, 'Venda de produto=Doritos Quantidade vendida=3.00', 'itensVenda', '2024-12-11 07:26:16', 'root@localhost'),
-	(5, 'Devolução de produto= Doritos Quantidade devolvida= 3.00', 'ItensVenda', '2024-12-11 07:29:35', 'root@localhost'),
-	(6, 'Venda de produto=Doritos Quantidade vendida=7.00', 'itensVenda', '2024-12-11 07:56:20', 'root@localhost'),
-	(7, 'Marca cadastrada: BONAFORT', 'marca', '2024-12-11 08:15:40', 'root@localhost');
+-- Copiando dados para a tabela tiago_victoria_clinica.agendamentos: ~1 rows (aproximadamente)
+DELETE FROM `agendamentos`;
+INSERT INTO `agendamentos` (`codAgendamentos`, `dataHora`, `pacientes_codPaciente`, `medicos_codMedico`) VALUES
+	(3, '12/12/2024  08:24', 7, 24);
 
--- Copiando estrutura para tabela lanchonete_2d_2024.cargo
-DROP TABLE IF EXISTS `cargo`;
-CREATE TABLE IF NOT EXISTS `cargo` (
+-- Copiando estrutura para tabela tiago_victoria_clinica.atendimento
+DROP TABLE IF EXISTS `atendimento`;
+CREATE TABLE IF NOT EXISTS `atendimento` (
+  `codAtendimento` int NOT NULL AUTO_INCREMENT,
+  `pacientes_codPaciente` int NOT NULL,
+  `medicos_codMedico` int NOT NULL,
+  `dataAtendimento` varchar(50) NOT NULL DEFAULT '',
+  `dataPagamento` varchar(50) NOT NULL DEFAULT '',
+  `tipoPagamento` varchar(50) NOT NULL,
+  PRIMARY KEY (`codAtendimento`) USING BTREE,
+  KEY `fk_pacientes_has_medicos_medicos1_idx` (`medicos_codMedico`),
+  KEY `fk_pacientes_has_medicos_pacientes1_idx` (`pacientes_codPaciente`),
+  CONSTRAINT `FK_medico` FOREIGN KEY (`medicos_codMedico`) REFERENCES `medicos` (`codMedico`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_paciente` FOREIGN KEY (`pacientes_codPaciente`) REFERENCES `pacientes` (`codPaciente`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+-- Copiando dados para a tabela tiago_victoria_clinica.atendimento: ~0 rows (aproximadamente)
+DELETE FROM `atendimento`;
+
+-- Copiando estrutura para tabela tiago_victoria_clinica.cargofuncionario
+DROP TABLE IF EXISTS `cargofuncionario`;
+CREATE TABLE IF NOT EXISTS `cargofuncionario` (
   `codCargo` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(300) NOT NULL,
-  `salarioInicial` decimal(10,2) DEFAULT NULL,
+  `nomeCargo` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`codCargo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.cargo: ~4 rows (aproximadamente)
-INSERT INTO `cargo` (`codCargo`, `nome`, `salarioInicial`) VALUES
-	(1, 'Gerente', 3850.77),
-	(2, 'Atendente', 1650.88),
-	(3, 'Cozinheira', 2310.28),
-	(5, 'Administrativo', NULL);
+-- Copiando dados para a tabela tiago_victoria_clinica.cargofuncionario: ~0 rows (aproximadamente)
+DELETE FROM `cargofuncionario`;
 
--- Copiando estrutura para tabela lanchonete_2d_2024.categoria
-DROP TABLE IF EXISTS `categoria`;
-CREATE TABLE IF NOT EXISTS `categoria` (
-  `codCategoria` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  PRIMARY KEY (`codCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Copiando estrutura para tabela tiago_victoria_clinica.dadosconsulta
+DROP TABLE IF EXISTS `dadosconsulta`;
+CREATE TABLE IF NOT EXISTS `dadosconsulta` (
+  `codConsulta` int NOT NULL AUTO_INCREMENT,
+  `diagnostica` varchar(300) NOT NULL,
+  `receita_codReceita` int NOT NULL,
+  `atendimento_codAtendimento` int NOT NULL,
+  PRIMARY KEY (`codConsulta`) USING BTREE,
+  KEY `fk_dadosConsulta_receita1_idx` (`receita_codReceita`),
+  KEY `fk_dadosConsulta_atendimento1_idx` (`atendimento_codAtendimento`),
+  CONSTRAINT `fk_atendimento` FOREIGN KEY (`atendimento_codAtendimento`) REFERENCES `atendimento` (`codAtendimento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_receita` FOREIGN KEY (`receita_codReceita`) REFERENCES `receita` (`codReceita`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.categoria: ~5 rows (aproximadamente)
-INSERT INTO `categoria` (`codCategoria`, `nome`) VALUES
-	(1, 'Refrigerante em lata'),
-	(2, 'Salgados'),
-	(4, 'Água'),
-	(5, 'Sucos naturais'),
-	(6, 'Salgadinhos industrializados');
+-- Copiando dados para a tabela tiago_victoria_clinica.dadosconsulta: ~0 rows (aproximadamente)
+DELETE FROM `dadosconsulta`;
 
--- Copiando estrutura para tabela lanchonete_2d_2024.cliente
-DROP TABLE IF EXISTS `cliente`;
-CREATE TABLE IF NOT EXISTS `cliente` (
-  `codCliente` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(150) NOT NULL,
-  `cpf` varchar(20) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `dataNascimento` date DEFAULT NULL,
-  `telefone` varchar(50) DEFAULT NULL,
-  `endereco` varchar(150) DEFAULT NULL,
-  `bairro` varchar(80) DEFAULT NULL,
-  `cidade` varchar(100) DEFAULT NULL,
-  `cep` varchar(15) DEFAULT NULL,
-  `uf` char(2) DEFAULT NULL,
-  PRIMARY KEY (`codCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Copiando estrutura para tabela tiago_victoria_clinica.especialidade
+DROP TABLE IF EXISTS `especialidade`;
+CREATE TABLE IF NOT EXISTS `especialidade` (
+  `codEspecialidade` int NOT NULL AUTO_INCREMENT,
+  `nomeEspecialidade` varchar(50) NOT NULL,
+  PRIMARY KEY (`codEspecialidade`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.cliente: ~5 rows (aproximadamente)
-INSERT INTO `cliente` (`codCliente`, `nome`, `cpf`, `email`, `dataNascimento`, `telefone`, `endereco`, `bairro`, `cidade`, `cep`, `uf`) VALUES
-	(1, 'Cliente à vista', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(2, 'Flávio Teixeira', '222.222.222-22', 'flaviot@gmail.com', '1980-11-25', NULL, NULL, NULL, NULL, NULL, NULL),
-	(3, 'Ana Margarida Silva', '333.333.333-33', 'anasilva@yahoo.com', '2008-04-14', NULL, NULL, NULL, NULL, NULL, NULL),
-	(4, 'Anderson Telles', '444.444.444-44', 'andersontelles2024@gmail.com', '1989-03-12', NULL, NULL, NULL, NULL, NULL, NULL),
-	(5, 'Rose Gonçalves', '555.555.555-55', 'roseg@gmail.com', '1985-10-05', '(35)98810-1010', 'Praça Antônio Carlos, 50', 'Centro', 'Machado', '37750-000', 'MG');
+-- Copiando dados para a tabela tiago_victoria_clinica.especialidade: ~1 rows (aproximadamente)
+DELETE FROM `especialidade`;
+INSERT INTO `especialidade` (`codEspecialidade`, `nomeEspecialidade`) VALUES
+	(9, 'Dermatologista');
 
--- Copiando estrutura para tabela lanchonete_2d_2024.funcionario
-DROP TABLE IF EXISTS `funcionario`;
-CREATE TABLE IF NOT EXISTS `funcionario` (
+-- Copiando estrutura para tabela tiago_victoria_clinica.funcionarios
+DROP TABLE IF EXISTS `funcionarios`;
+CREATE TABLE IF NOT EXISTS `funcionarios` (
   `codFuncionario` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(300) NOT NULL,
-  `carTrab` varchar(90) NOT NULL,
-  `cpf` varchar(20) DEFAULT NULL,
-  `salarioAtual` decimal(10,2) DEFAULT NULL,
-  `email` varchar(250) DEFAULT NULL,
-  `dataAdmissao` date DEFAULT NULL,
-  `cargo_codCargo` int NOT NULL,
-  PRIMARY KEY (`codFuncionario`,`cargo_codCargo`),
-  KEY `fk_funcionario_cargo1_idx` (`cargo_codCargo`),
-  CONSTRAINT `fk_funcionario_cargo1` FOREIGN KEY (`cargo_codCargo`) REFERENCES `cargo` (`codCargo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `nomeFuncionario` varchar(150) NOT NULL,
+  `salarioFuncionario` double(5,2) NOT NULL,
+  `cargoFuncionario_codCargo` int NOT NULL,
+  PRIMARY KEY (`codFuncionario`) USING BTREE,
+  KEY `fk_funcionarios_cargoFuncionario_idx` (`cargoFuncionario_codCargo`),
+  CONSTRAINT `fkFuncionario` FOREIGN KEY (`cargoFuncionario_codCargo`) REFERENCES `funcionarios` (`codFuncionario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.funcionario: ~3 rows (aproximadamente)
-INSERT INTO `funcionario` (`codFuncionario`, `nome`, `carTrab`, `cpf`, `salarioAtual`, `email`, `dataAdmissao`, `cargo_codCargo`) VALUES
-	(1, 'Felipe Xavier', 'AB123', '111.111.111-11', 4000.00, 'felipexavier@gmail.com', '2024-02-15', 1),
-	(2, 'Amanda Silva', 'XY222', '222.222.222-22', 1650.88, NULL, '2016-07-02', 2),
-	(3, 'Francisca Telles', 'BFG999', '333.333.333-33', 2310.28, 'telles_francisca@hotmail.com', '2019-12-20', 3);
+-- Copiando dados para a tabela tiago_victoria_clinica.funcionarios: ~0 rows (aproximadamente)
+DELETE FROM `funcionarios`;
 
--- Copiando estrutura para tabela lanchonete_2d_2024.itensvenda
-DROP TABLE IF EXISTS `itensvenda`;
-CREATE TABLE IF NOT EXISTS `itensvenda` (
-  `codItemVenda` int NOT NULL AUTO_INCREMENT,
-  `produto_codProduto` int NOT NULL,
-  `venda_codVenda` int NOT NULL,
-  `quantVenda` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`codItemVenda`,`produto_codProduto`,`venda_codVenda`),
-  KEY `fk_produto_has_venda_venda1_idx` (`venda_codVenda`),
-  KEY `fk_produto_has_venda_produto1_idx` (`produto_codProduto`),
-  CONSTRAINT `fk_produto_has_venda_produto1` FOREIGN KEY (`produto_codProduto`) REFERENCES `produto` (`codProduto`),
-  CONSTRAINT `fk_produto_has_venda_venda1` FOREIGN KEY (`venda_codVenda`) REFERENCES `venda` (`codVenda`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Copiando estrutura para tabela tiago_victoria_clinica.medicos
+DROP TABLE IF EXISTS `medicos`;
+CREATE TABLE IF NOT EXISTS `medicos` (
+  `codMedico` int NOT NULL AUTO_INCREMENT,
+  `nomeMedico` varchar(150) NOT NULL,
+  `cpfMedico` varchar(30) NOT NULL,
+  `crmMedico` varchar(20) NOT NULL,
+  `emailMedico` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `especialidadeMedico` int NOT NULL,
+  PRIMARY KEY (`codMedico`) USING BTREE,
+  KEY `FK_especialidadeMedico` (`especialidadeMedico`) USING BTREE,
+  CONSTRAINT `FK_especialidadeMedico` FOREIGN KEY (`especialidadeMedico`) REFERENCES `especialidade` (`codEspecialidade`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
 
--- Copiando dados para a tabela lanchonete_2d_2024.itensvenda: ~0 rows (aproximadamente)
-INSERT INTO `itensvenda` (`codItemVenda`, `produto_codProduto`, `venda_codVenda`, `quantVenda`) VALUES
-	(3, 4, 1, 5.00);
+-- Copiando dados para a tabela tiago_victoria_clinica.medicos: ~1 rows (aproximadamente)
+DELETE FROM `medicos`;
+INSERT INTO `medicos` (`codMedico`, `nomeMedico`, `cpfMedico`, `crmMedico`, `emailMedico`, `especialidadeMedico`) VALUES
+	(24, 'caio', '111111111111111111111', '33333333333333333', 'teste', 9);
 
--- Copiando estrutura para tabela lanchonete_2d_2024.marca
-DROP TABLE IF EXISTS `marca`;
-CREATE TABLE IF NOT EXISTS `marca` (
-  `codMarca` int NOT NULL AUTO_INCREMENT COMMENT 'codMarca será a Primary Key (Chave Primária) da entidade (tabela) MARCA. Foi atribuído o tipo INT para que seja um número inteiro gerado automaticamente (AI = auto increment) e não pode ser nulo (NN = not null), ou seja, tem que ser preenchido.',
-  `nome` varchar(50) NOT NULL,
-  `observacoes` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`codMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
-
--- Copiando dados para a tabela lanchonete_2d_2024.marca: ~10 rows (aproximadamente)
-INSERT INTO `marca` (`codMarca`, `nome`, `observacoes`) VALUES
-	(1, 'Nestlé', NULL),
-	(2, 'Lacta', NULL),
-	(3, 'Frutty', NULL),
-	(4, 'Coca-Cola', NULL),
-	(5, 'Elma Chips', 'Salgadinhos diversos'),
-	(6, 'Ferrero', 'Chocolates'),
-	(8, 'Kopenhagen', NULL),
-	(9, 'Bauducco', NULL),
-	(10, 'CACAU SHOW', NULL),
-	(11, 'BONAFORT', NULL);
-
--- Copiando estrutura para tabela lanchonete_2d_2024.produto
-DROP TABLE IF EXISTS `produto`;
-CREATE TABLE IF NOT EXISTS `produto` (
-  `codProduto` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(200) NOT NULL,
-  `ingredientes` varchar(500) DEFAULT NULL,
-  `quantidade` decimal(10,2) DEFAULT NULL,
-  `precoCusto` float DEFAULT NULL,
-  `precoVenda` float NOT NULL,
-  `marca_codMarca` int NOT NULL,
-  `categoria_codCategoria` int NOT NULL,
-  PRIMARY KEY (`codProduto`,`marca_codMarca`,`categoria_codCategoria`),
-  KEY `fk_produto_marca_idx` (`marca_codMarca`),
-  KEY `fk_produto_categoria1_idx` (`categoria_codCategoria`),
-  CONSTRAINT `fk_produto_categoria1` FOREIGN KEY (`categoria_codCategoria`) REFERENCES `categoria` (`codCategoria`),
-  CONSTRAINT `fk_produto_marca` FOREIGN KEY (`marca_codMarca`) REFERENCES `marca` (`codMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Copiando dados para a tabela lanchonete_2d_2024.produto: ~4 rows (aproximadamente)
-INSERT INTO `produto` (`codProduto`, `nome`, `ingredientes`, `quantidade`, `precoCusto`, `precoVenda`, `marca_codMarca`, `categoria_codCategoria`) VALUES
-	(1, 'Coca-cola', NULL, 48.00, 4.2, 5.2, 4, 1),
-	(3, 'Cheetos', NULL, 22.00, 3.9, 5, 5, 6),
-	(4, 'Doritos', NULL, 73.00, 7.35, 9, 5, 6),
-	(5, 'Fandangos', NULL, 17.00, 4, 4.5, 5, 6);
-
--- Copiando estrutura para tabela lanchonete_2d_2024.venda
-DROP TABLE IF EXISTS `venda`;
-CREATE TABLE IF NOT EXISTS `venda` (
-  `codVenda` int NOT NULL AUTO_INCREMENT,
-  `dataHora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tipoPagamento` enum('À vista','Cartão de crédito','Cartão de débito','PIX','Cheque','Ticket Alimentação','Convênio') NOT NULL,
-  `cliente_codCliente` int NOT NULL,
-  `funcionario_codFuncionario` int NOT NULL,
-  PRIMARY KEY (`codVenda`,`cliente_codCliente`,`funcionario_codFuncionario`),
-  KEY `fk_venda_cliente1_idx` (`cliente_codCliente`),
-  KEY `fk_venda_funcionario1_idx` (`funcionario_codFuncionario`),
-  CONSTRAINT `fk_venda_cliente1` FOREIGN KEY (`cliente_codCliente`) REFERENCES `cliente` (`codCliente`),
-  CONSTRAINT `fk_venda_funcionario1` FOREIGN KEY (`funcionario_codFuncionario`) REFERENCES `funcionario` (`codFuncionario`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Copiando dados para a tabela lanchonete_2d_2024.venda: ~3 rows (aproximadamente)
-INSERT INTO `venda` (`codVenda`, `dataHora`, `tipoPagamento`, `cliente_codCliente`, `funcionario_codFuncionario`) VALUES
-	(1, '2024-08-22 10:18:00', 'PIX', 5, 2),
-	(2, '2024-08-22 10:30:04', 'Convênio', 3, 2),
-	(3, '2024-12-04 07:31:58', 'À vista', 2, 2);
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_anoscontrato
-DROP VIEW IF EXISTS `vi_anoscontrato`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_anoscontrato` (
-	`codFuncionario` INT(10) NOT NULL,
-	`nome` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`cpf` VARCHAR(20) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`dataContrato` VARCHAR(10) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`anosContrato` BIGINT(19) NULL
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_cardapio
-DROP VIEW IF EXISTS `vi_cardapio`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_cardapio` (
-	`nomeProduto` VARCHAR(200) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`precoVenda` VARCHAR(48) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`nomeMarca` VARCHAR(50) NOT NULL COLLATE 'utf8mb3_general_ci',
-	`Categoria` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_0900_ai_ci'
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_cargosalariodecrescente
-DROP VIEW IF EXISTS `vi_cargosalariodecrescente`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_cargosalariodecrescente` (
-	`nome` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`salarioinicial` DECIMAL(10,2) NULL
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_controlefuncionarios
-DROP VIEW IF EXISTS `vi_controlefuncionarios`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_controlefuncionarios` (
-	`nome` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`cpf` VARCHAR(20) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`inicioContrato` VARCHAR(10) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`anosContrato` BIGINT(19) NULL,
-	`salarioInicial` DECIMAL(10,2) NULL
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_controleproduto
-DROP VIEW IF EXISTS `vi_controleproduto`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_controleproduto` (
-	`codProduto` INT(10) NOT NULL,
-	`nome` VARCHAR(200) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`precoCusto` VARCHAR(48) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`precoVenda` VARCHAR(48) NOT NULL COLLATE 'utf8mb4_0900_ai_ci'
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_funcionarioscargos
-DROP VIEW IF EXISTS `vi_funcionarioscargos`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_funcionarioscargos` (
-	`nome` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`codFuncionario` INT(10) NOT NULL,
-	`carTrab` VARCHAR(90) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`nomeCargo` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`salarioInicial` DECIMAL(10,2) NULL,
-	`admissao` VARCHAR(10) NULL COLLATE 'utf8mb4_0900_ai_ci'
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_idadeclientes
-DROP VIEW IF EXISTS `vi_idadeclientes`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_idadeclientes` (
-	`nome` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`email` VARCHAR(150) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`nascimento` VARCHAR(10) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`idade` BIGINT(19) NULL
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_notinhadetalhada
-DROP VIEW IF EXISTS `vi_notinhadetalhada`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_notinhadetalhada` (
-	`venda_codVenda` INT(10) NOT NULL,
-	`nome` VARCHAR(200) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`quantVenda` DECIMAL(10,2) NOT NULL,
-	`precoUnitario` VARCHAR(48) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`totalPorItem` VARCHAR(61) NOT NULL COLLATE 'utf8mb4_0900_ai_ci'
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_totalpagarporvenda
-DROP VIEW IF EXISTS `vi_totalpagarporvenda`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_totalpagarporvenda` (
-	`codVenda` INT(10) NOT NULL,
-	`nome` VARCHAR(150) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`tipoPagamento` ENUM('À vista','Cartão de crédito','Cartão de débito','PIX','Cheque','Ticket Alimentação','Convênio') NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`sum(format(i.quantVenda * p.precoVenda,2))` DOUBLE NULL
-) ENGINE=MyISAM;
-
--- Copiando estrutura para view lanchonete_2d_2024.vi_vendaspix
-DROP VIEW IF EXISTS `vi_vendaspix`;
--- Criando tabela temporária para evitar erros de dependência de VIEW
-CREATE TABLE `vi_vendaspix` (
-	`codVenda` INT(10) NOT NULL,
-	`referenciaData` VARCHAR(10) NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`tipoPagamento` ENUM('À vista','Cartão de crédito','Cartão de débito','PIX','Cheque','Ticket Alimentação','Convênio') NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`nome` VARCHAR(300) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`carTrab` VARCHAR(90) NOT NULL COLLATE 'utf8mb4_0900_ai_ci'
-) ENGINE=MyISAM;
-
--- Copiando estrutura para trigger lanchonete_2d_2024.tri_atualizaEstoque
-DROP TRIGGER IF EXISTS `tri_atualizaEstoque`;
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_inseredadosconsulta
+DROP PROCEDURE IF EXISTS `p_inseredadosconsulta`;
 DELIMITER //
-CREATE TRIGGER `tri_atualizaEstoque` AFTER UPDATE ON `itensvenda` FOR EACH ROW BEGIN
-
-	if (NEW.quantVenda > OLD.quantVenda)
-		then UPDATE produto SET quantidade = quantidade - 
-				(NEW.quantVenda - OLD.quantVenda) WHERE codProduto = NEW.produto_codProduto;
-	
-		ELSE if (NEW.quantVenda < OLD.quantVenda)
-				then UPDATE produto SET quantidade = quantidade + 
-				(OLD.quantVenda - NEW.quantVenda) WHERE codProduto = NEW.produto_codProduto;
-			END if;
-	END if;	
+CREATE PROCEDURE `p_inseredadosconsulta`(
+	IN `diagnosticaNovo` VARCHAR(300),
+	IN `receita_codReceitaNovo` INT,
+	IN `atendimento_codAtendimentoNovo` INT
+)
+BEGIN
+		INSERT INTO dadosconsulta(diagnostica, receita_codReceita, atendimento_codAtendimento) VALUES(diagnosticaNovo, receita_codReceitaNovo, atendimento_codAtendimentoNovo);
+	SELECT * FROM dadosconsulta;
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Copiando estrutura para trigger lanchonete_2d_2024.tri_baixaEstoque
-DROP TRIGGER IF EXISTS `tri_baixaEstoque`;
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+-- Copiando estrutura para tabela tiago_victoria_clinica.pacientes
+DROP TABLE IF EXISTS `pacientes`;
+CREATE TABLE IF NOT EXISTS `pacientes` (
+  `codPaciente` int NOT NULL AUTO_INCREMENT,
+  `nomePaciente` varchar(150) NOT NULL,
+  `cpfPaciente` varchar(30) NOT NULL,
+  `telefonePaciente` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `emailPaciente` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  PRIMARY KEY (`codPaciente`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+
+-- Copiando dados para a tabela tiago_victoria_clinica.pacientes: ~1 rows (aproximadamente)
+DELETE FROM `pacientes`;
+INSERT INTO `pacientes` (`codPaciente`, `nomePaciente`, `cpfPaciente`, `telefonePaciente`, `emailPaciente`) VALUES
+	(7, 'pietra', '6868868', '6666666666666666', 'teste2');
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraAgendamento
+DROP PROCEDURE IF EXISTS `p_alteraAgendamento`;
 DELIMITER //
-CREATE TRIGGER `tri_baixaEstoque` AFTER INSERT ON `itensvenda` FOR EACH ROW BEGIN
-#Atualizar o estoque do produto 
-	UPDATE produto SET produto.quantidade = produto.quantidade
-	- NEW.quantVenda WHERE produto.codProduto = NEW.produto_codProduto;
-#Buscar o nome do produto para informar na Auditoria
-	SELECT nome INTO @nomeProd FROM produto WHERE codProduto = NEW.produto_codProduto;
-#Configurar uma mensagem concatenando (juntando) vários trechos
-	SET @mensagem = CONCAT("Venda de produto=", @nomeProd,
- " Quantidade vendida=", NEW.quantVenda);
-#Gravar / inserir um log (informação importante) na auditoria
-	INSERT INTO auditoria VALUES(NULL, @mensagem, "itensVenda", NOW(), USER());
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Copiando estrutura para trigger lanchonete_2d_2024.tri_devolveEstoque
-DROP TRIGGER IF EXISTS `tri_devolveEstoque`;
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `tri_devolveEstoque` AFTER DELETE ON `itensvenda` FOR EACH ROW BEGIN
-#atualizar o estoque do produto devolvendo a quantidade que foi excluída
-	UPDATE produto SET quantidade = quantidade + old.quantVenda
-	WHERE codProduto = old.produto_codProduto;
-
-	SELECT nome INTO @nomeProd FROM produto WHERE codProduto = old.produto_codProduto;
-
-	SET @mensagem = CONCAT("Devolução de produto= ", @nomeProd, " Quantidade devolvida= ", old.quantVenda);
-
-#inserir um log na auditoia
-	INSERT INTO auditoria VALUES (NULL, @mensagem , "ItensVenda", NOW(), USER());
-
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Copiando estrutura para trigger lanchonete_2d_2024.tri_novaMarca
-DROP TRIGGER IF EXISTS `tri_novaMarca`;
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `tri_novaMarca` BEFORE INSERT ON `marca` FOR EACH ROW BEGIN
-
-	#Configurar nome da marca para letras maiúsculas
-	SET NEW.nome = UPPER(NEW.nome);
+CREATE PROCEDURE `p_alteraAgendamento`(
+	IN `codAgendamentosAltera` INT,
+	IN `pacientes_codPacienteAltera` INT,
+	IN `medicos_codMedicoAltera` INT,
+	IN `dataHoraAltera` DATETIME
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM agendamentos WHERE codAgendamentos = codAgendamentosAltera;
 	
-	#Configurar uma mensaagem para ser gravada na AUDITORIA
-	SET @mensagem = CONCAT("Marca cadastrada: " , NEW.nome);
-	
-	#Inserir a mensagem e demais dados na AUDITORIA
-	INSERT INTO auditoria VALUES(NULL, @mensagem, "marca", NOW(), USER());
+	if (@contador = 0)
+		then SELECT "Agendamento não existe!" AS erro;
+		ELSE UPDATE agendamentos SET pacientes_codPaciente = pacientes_codPacienteAltera, medicos_codMedico = medicos_codMedicoAltera,
+		dataHora = dataHoraAltera
+				WHERE codAgendamentos = codAgendamentosAltera  ;
+			
+	END if;
+		SELECT * FROM agendamentos;
 	
 END//
 DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_anoscontrato`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_anoscontrato` AS select `funcionario`.`codFuncionario` AS `codFuncionario`,`funcionario`.`nome` AS `nome`,`funcionario`.`cpf` AS `cpf`,date_format(`funcionario`.`dataAdmissao`,'%d/%m/%Y') AS `dataContrato`,floor(((to_days(curdate()) - to_days(`funcionario`.`dataAdmissao`)) / 365)) AS `anosContrato` from `funcionario`;
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraAtendimento
+DROP PROCEDURE IF EXISTS `p_alteraAtendimento`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraAtendimento`(
+	IN `codAtendimentoAltera` INT,
+	IN `pacientes_codPacienteAltera` INT,
+	IN `medicos_codMedicoAltera` INT,
+	IN `dataAtendimentoAltera` DATE,
+	IN `dataPagamentoAltera` DATE,
+	IN `tipoPagamentoAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM atendimento WHERE codAtendimento = codAtendimentoAltera;
+	
+	if (@contador = 0)
+		then SELECT "Atendimento não existe!" AS erro;
+		ELSE UPDATE atendimento SET pacientes_codPaciente = pacientes_codPacienteAltera, medicos_codMedico = medicos_codMedicoAltera, 
+		dataAtendimento = dataAtendimentoAltera, dataPagamento = dataPagamentoAltera, tipoPagamento = tipoPagamentoAltera
+		
+				WHERE codAtendimento = codAtendimentoAltera  ;
+			
+	END if;
+		SELECT * FROM atendimento;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_cardapio`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_cardapio` AS select `p`.`nome` AS `nomeProduto`,format(`p`.`precoVenda`,2) AS `precoVenda`,`m`.`nome` AS `nomeMarca`,`c`.`nome` AS `Categoria` from ((`produto` `p` join `marca` `m`) join `categoria` `c` on(((`p`.`marca_codMarca` = `m`.`codMarca`) and (`p`.`categoria_codCategoria` = `c`.`codCategoria`))));
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraCargoFuncionario
+DROP PROCEDURE IF EXISTS `p_alteraCargoFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraCargoFuncionario`(
+	IN `codCargoAltera` INT,
+	IN `nomeCargoAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM cargofuncionario WHERE codCargo = codCargoAltera;
+	
+	if (@contador = 0)
+		then SELECT "Cargo não encontrado!" AS erro;
+		ELSE UPDATE cargofuncionario SET nomeCargo = nomeCargoAltera
+				WHERE codCargo = codCargoAltera  ;
+			
+	END if;
+		SELECT * FROM cargofuncionario;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_cargosalariodecrescente`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_cargosalariodecrescente` AS select `cargo`.`nome` AS `nome`,`cargo`.`salarioInicial` AS `salarioinicial` from `cargo` order by `cargo`.`salarioInicial` desc;
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraDadosConsulta
+DROP PROCEDURE IF EXISTS `p_alteraDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraDadosConsulta`(
+	IN `codConsultaAltera` INT,
+	IN `dignosticoAltera` VARCHAR(300),
+	IN `codReceitaAltera` INT,
+	IN `codAtendimentoAltera` INT
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM dadosConsulta WHERE codConsulta = codConsultaAltera;
+	
+	if (@contador = 0)
+		then SELECT "Consulta não existe!" AS erro;
+		ELSE UPDATE dadosConsulta SET diagnostica = dignosticoAltera, receita_codReceita = codReceitaAltera, atendimento_codAtendimento = codAtendimentoAltera
+		
+				WHERE codConsulta = codConsultaAltera  ;
+			
+	END if;
+		SELECT * FROM dadosConsulta;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_controlefuncionarios`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_controlefuncionarios` AS select `f`.`nome` AS `nome`,`f`.`cpf` AS `cpf`,date_format(`f`.`dataAdmissao`,'%d/%m/%Y') AS `inicioContrato`,floor(((to_days(curdate()) - to_days(`f`.`dataAdmissao`)) / 365)) AS `anosContrato`,`c`.`salarioInicial` AS `salarioInicial` from (`funcionario` `f` join `cargo` `c` on((`f`.`cargo_codCargo` = `c`.`codCargo`))) where (`c`.`salarioInicial` < 2000);
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraEspecialidade
+DROP PROCEDURE IF EXISTS `p_alteraEspecialidade`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraEspecialidade`(
+	IN `codEspecialidadeAltera` INT,
+	IN `nomeEspecialidadeAltera` VARCHAR(50)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM especialidade WHERE codEspecialidade = codEspecialidadeAltera;
+	
+	if (@contador = 0)
+		then SELECT "Especialidade não encontrada!" AS erro;
+		ELSE UPDATE especialidade SET nomeEspecialidade = nomeEspecialidadeAltera
+				WHERE codEspecialidade = codEspecialidadeAltera  ;
+			
+	END if;
+		SELECT * FROM especialidade;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_controleproduto`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_controleproduto` AS select `produto`.`codProduto` AS `codProduto`,`produto`.`nome` AS `nome`,format(`produto`.`precoCusto`,2) AS `precoCusto`,format(`produto`.`precoVenda`,2) AS `precoVenda` from `produto`;
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraFuncionario
+DROP PROCEDURE IF EXISTS `p_alteraFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraFuncionario`(
+	IN `funcionarioAltera` INT,
+	IN `nomeFuncionarioAltera` VARCHAR(150),
+	IN `salarioFuncionarioAltera` DOUBLE,
+	IN `cargoFuncionarioAltera` INT
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM funcionarios WHERE codFuncionario = funcionarioAltera;
+	
+	if (@contador = 0)
+		then SELECT "Funcionário não encontrado!" AS erro;
+		ELSE UPDATE funcionarios SET nomeFuncionario = nomeFuncionarioAltera, salarioFuncionario = salarioFuncionarioAltera, cargoFuncionario_codCargo = cargoFuncionarioAltera
+		
+				WHERE codFuncionario = funcionarioAltera  ;
+			
+	END if;
+		SELECT * FROM funcionarios;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_funcionarioscargos`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_funcionarioscargos` AS select `f`.`nome` AS `nome`,`f`.`codFuncionario` AS `codFuncionario`,`f`.`carTrab` AS `carTrab`,`c`.`nome` AS `nomeCargo`,`c`.`salarioInicial` AS `salarioInicial`,date_format(`f`.`dataAdmissao`,'%d/%m/%Y') AS `admissao` from (`cargo` `c` join `funcionario` `f` on((`c`.`codCargo` = `f`.`cargo_codCargo`)));
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraMedico
+DROP PROCEDURE IF EXISTS `p_alteraMedico`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraMedico`(
+	IN `codMedicoAltera` INT,
+	IN `nomeMedicoAltera` VARCHAR(150),
+	IN `cpfMedicoAltera` VARCHAR(30),
+	IN `crmMedicoAltera` VARCHAR(20),
+	IN `emailMedicoAltera` VARCHAR(100),
+	IN `especialidade_codEspecialidadeAltera` VARCHAR(20)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM medicos WHERE codMedico = codMedicoAltera;
+	
+	if (@contador = 0)
+		then SELECT "Médico não encontrado!" AS erro;
+		ELSE UPDATE medicos SET nomeMedico = nomeMedicoAltera, cpfMedico = cpfMedicoAltera, crmMedico = crmMedicoAltera, 
+		emailMedico = emailMedicoAltera, especialidade_codEspecialidade = especialidade_codEspecialidadeAltera
+				WHERE codMedico = codMedicoAltera;
+			
+	END if;
+		SELECT * FROM medicos;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_idadeclientes`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_idadeclientes` AS select `c`.`nome` AS `nome`,`c`.`email` AS `email`,date_format(`c`.`dataNascimento`,'%d/%m/%Y') AS `nascimento`,floor(((to_days(curdate()) - to_days(`c`.`dataNascimento`)) / 365)) AS `idade` from `cliente` `c`;
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraPaciente
+DROP PROCEDURE IF EXISTS `p_alteraPaciente`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraPaciente`(
+	IN `codPacienteAltera` INT,
+	IN `nomePacienteAltera` VARCHAR(150),
+	IN `cpfPacienteAltera` VARCHAR(30),
+	IN `telefonePacienteAltera` VARCHAR(40),
+	IN `emailPacienteAltera` VARCHAR(100)
+)
+BEGIN
+		SELECT COUNT(*) INTO @contador FROM pacientes WHERE codPaciente = codPacienteAltera;
+	
+	if (@contador = 0)
+		then SELECT "Paciente não encontrado!" AS erro;
+		ELSE UPDATE pacientes SET nomePaciente = nomePacienteAltera, cpfPaciente = cpfPacienteAltera, telefonePaciente = telefonePacienteAltera, 
+		emailPaciente = emailPacienteAltera
+				WHERE codPaciente = codPacienteAltera;
+			
+	END if;
+		SELECT * FROM pacientes;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_notinhadetalhada`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_notinhadetalhada` AS select `i`.`venda_codVenda` AS `venda_codVenda`,`p`.`nome` AS `nome`,`i`.`quantVenda` AS `quantVenda`,format(`p`.`precoVenda`,2) AS `precoUnitario`,format((`i`.`quantVenda` * `p`.`precoVenda`),2) AS `totalPorItem` from (`itensvenda` `i` join `produto` `p` on((`i`.`produto_codProduto` = `p`.`codProduto`)));
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_alteraReceita
+DROP PROCEDURE IF EXISTS `p_alteraReceita`;
+DELIMITER //
+CREATE PROCEDURE `p_alteraReceita`(
+	IN `receitaAltera` INT,
+	IN `remediosAltera` VARCHAR(250)
+)
+BEGIN
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_totalpagarporvenda`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_totalpagarporvenda` AS select `v`.`codVenda` AS `codVenda`,`c`.`nome` AS `nome`,`v`.`tipoPagamento` AS `tipoPagamento`,sum(format((`i`.`quantVenda` * `p`.`precoVenda`),2)) AS `sum(format(i.quantVenda * p.precoVenda,2))` from (((`venda` `v` join `cliente` `c` on((`v`.`cliente_codCliente` = `c`.`codCliente`))) join `itensvenda` `i` on((`i`.`venda_codVenda` = `v`.`codVenda`))) join `produto` `p` on((`p`.`codProduto` = `i`.`produto_codProduto`))) group by `v`.`codVenda`,`c`.`nome`,`v`.`tipoPagamento`;
+		SELECT COUNT(*) INTO @contador FROM receita WHERE codReceita = receitaAltera ;
+	
+	if (@contador = 0)
+		then SELECT "Receita não prescrita!" AS erro;
+		ELSE UPDATE receita  SET remediosPrescritos = remediosAltera
+				WHERE codReceita = receitaAltera ;
+			
+	END if;
+		SELECT * FROM receita ;
+	
+END//
+DELIMITER ;
 
--- Removendo tabela temporária e criando a estrutura VIEW final
-DROP TABLE IF EXISTS `vi_vendaspix`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vi_vendaspix` AS select `v`.`codVenda` AS `codVenda`,date_format(`v`.`dataHora`,'%d/%m/%Y') AS `referenciaData`,`v`.`tipoPagamento` AS `tipoPagamento`,`f`.`nome` AS `nome`,`f`.`carTrab` AS `carTrab` from (`venda` `v` join `funcionario` `f` on((`v`.`funcionario_codFuncionario` = `f`.`codFuncionario`))) where (`v`.`tipoPagamento` = 'pix');
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaAgendamento
+DROP PROCEDURE IF EXISTS `p_apagaAgendamento`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaAgendamento`(
+	IN `codAgendamentosApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM agendamentos WHERE codAgendamentos = codAgendamentosApagar;
+	if (@contador = 0)
+		then SELECT "Agendamento não existe!" AS erro;
+		else
+			DELETE FROM agendamentos WHERE codAgendamentos = codAgendamentosApagar;
+			SELECT * FROM agendamentos;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaAtendimento
+DROP PROCEDURE IF EXISTS `p_apagaAtendimento`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaAtendimento`(
+	IN `codAtendimentoApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM atendimento WHERE codAtendimento = codAtendimentoApagar;
+	if (@contador = 0)
+		then SELECT "Atendimento não existe!" AS erro;
+		else
+			DELETE FROM atendimento WHERE codAtendimento = codAtendimentoApagar;
+			SELECT * FROM atendimento;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaCargo
+DROP PROCEDURE IF EXISTS `p_apagaCargo`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaCargo`(
+	IN `codCargoApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM cargofuncionario WHERE codCargo = codCargoApagar;
+	if (@contador = 0)
+		then SELECT "Cargo não existe!" AS erro;
+		else
+			DELETE FROM cargofuncionario WHERE codCargo = codCargoApagar;
+			SELECT * FROM cargofuncionario;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaDadosConsulta
+DROP PROCEDURE IF EXISTS `p_apagaDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaDadosConsulta`(
+	IN `codConsultaApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM dadosconsulta WHERE codConsulta = codConsultaApaga;
+	if (@contador = 0)
+		then SELECT "Consulta não existe!" AS erro;
+		else
+			DELETE FROM dadosconsulta WHERE codConsulta = codConsultaApaga;
+			SELECT * FROM dadosconsulta;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaEspecialidade
+DROP PROCEDURE IF EXISTS `p_apagaEspecialidade`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaEspecialidade`(
+	IN `codEspecialidadeApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM especialidade WHERE codEspecialidade = codEspecialidadeApaga;
+	if (@contador = 0)
+		then SELECT "Especialidade não cadastrada!" AS erro;
+		else
+			DELETE FROM especialidade WHERE codEspecialidade = codEspecialidadeApaga;
+			SELECT * FROM especialidade;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaFuncionario
+DROP PROCEDURE IF EXISTS `p_apagaFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaFuncionario`(
+	IN `codFuncionarioApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM funcionarios WHERE codFuncionario = codFuncionarioApagar;
+	if (@contador = 0)
+		then SELECT "Funcionário não cadastrado!" AS erro;
+		else
+			DELETE FROM funcionarios WHERE codFuncionario = codFuncionario;
+			SELECT * FROM funcionarios;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaMedico
+DROP PROCEDURE IF EXISTS `p_apagaMedico`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaMedico`(
+	IN `codMedicoApaga` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM medicos WHERE codMedico = codMedicoApaga;
+	if (@contador = 0)
+		then SELECT "Médico não cadastrado!" AS erro;
+		else
+			DELETE FROM medicos WHERE codMedico = codMedicoApaga;
+			SELECT * FROM medicos;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaPaciente
+DROP PROCEDURE IF EXISTS `p_apagaPaciente`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaPaciente`(
+	IN `codPacienteApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM pacientes WHERE codPaciente = codPacienteApagar;
+	if (@contador = 0)
+		then SELECT "Paciente não existe!" AS erro;
+		else
+			DELETE FROM pacientes WHERE codPaciente = codPacienteApagar;
+			SELECT * FROM pacientes;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_apagaReceita
+DROP PROCEDURE IF EXISTS `p_apagaReceita`;
+DELIMITER //
+CREATE PROCEDURE `p_apagaReceita`(
+	IN `codReceitaApagar` INT
+)
+BEGIN
+
+	SELECT COUNT(*) INTO @contador FROM receita WHERE codReceita = codReceitaApagar;
+	if (@contador = 0)
+		then SELECT "Receita não existe!" AS erro;
+		else
+			DELETE FROM receita WHERE codReceita = codReceitaApagar;
+			SELECT * FROM receita;
+	END if;
+
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereAgendamento
+DROP PROCEDURE IF EXISTS `p_insereAgendamento`;
+DELIMITER //
+CREATE PROCEDURE `p_insereAgendamento`(
+	IN `dataHoraNovo` DATETIME,
+	IN `pacientes_codPacienteNovo` INT,
+	IN `medicos_codMedicoNovo` INT
+)
+BEGIN
+	INSERT INTO agendamentos(dataHora, pacientes_codPaciente, medicos_codMedico) 
+	VALUES(dataHoraNovo, pacientes_codPacienteNovo, medicos_codMedicoNovo);
+	SELECT * FROM agendamentos;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereAtendimento
+DROP PROCEDURE IF EXISTS `p_insereAtendimento`;
+DELIMITER //
+CREATE PROCEDURE `p_insereAtendimento`(
+	IN `pacientes_codPacienteNovo` INT,
+	IN `medicos_codMedicoNovo` INT,
+	IN `dataAtendimentoNovo` DATE,
+	IN `dataPagamentoNovo` DATE,
+	IN `tipoPagamentoNovo` VARCHAR(50)
+)
+BEGIN
+	INSERT INTO atendimento(pacientes_codPaciente, medicos_codMedico, dataAtendimento, dataPagamento, tipoPagamento) 
+	VALUES(pacientes_codPacienteNovo, medicos_codMedicoNovo, dataAtendimentoNovo, dataPagamentoNovo, tipoPagamentoNovo);
+	SELECT * FROM atendimento;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereCargoFuncionario
+DROP PROCEDURE IF EXISTS `p_insereCargoFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_insereCargoFuncionario`(
+	IN `nomeNovo` VARCHAR(50)
+)
+BEGIN
+	INSERT INTO cargofuncionario(nomeCargo) VALUES(nomeNovo);
+	SELECT * FROM cargofuncionario ;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereDadosConsulta
+DROP PROCEDURE IF EXISTS `p_insereDadosConsulta`;
+DELIMITER //
+CREATE PROCEDURE `p_insereDadosConsulta`(
+	IN `diagnosticoInsere` VARCHAR(300),
+	IN `codReceitaInsere` INT,
+	IN `codAtendimentoInsere` INT
+)
+BEGIN
+	INSERT INTO dadosconsulta(diagnostica, receita_codReceita, atendimento_codAtendimento) VALUES(diagnosticoInsere, codReceitaInsere, codAtendimentoInsere);
+	SELECT * FROM dadosconsulta;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereEspecialidade
+DROP PROCEDURE IF EXISTS `p_insereEspecialidade`;
+DELIMITER //
+CREATE PROCEDURE `p_insereEspecialidade`(
+	IN `nomeNovo` VARCHAR(50)
+)
+BEGIN
+	INSERT INTO especialidade(nomeEspecialidade) VALUES(nomeNovo);
+	SELECT * FROM especialidade;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereFuncionario
+DROP PROCEDURE IF EXISTS `p_insereFuncionario`;
+DELIMITER //
+CREATE PROCEDURE `p_insereFuncionario`(
+	IN `nomeFuncionarioNovo` VARCHAR(150),
+	IN `salarioFuncionarioNovo` DOUBLE,
+	IN `cargoFuncionario_codCargoNovo` INT
+)
+BEGIN
+	INSERT INTO funcionarios(nomeFuncionario, salarioFuncionario, cargoFuncionario_codCargo) VALUES(nomeFuncionarioNovo, salarioFuncionarioNovo, cargoFuncionario_codCargoNovo);
+	SELECT * FROM funcionarios;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereMedico
+DROP PROCEDURE IF EXISTS `p_insereMedico`;
+DELIMITER //
+CREATE PROCEDURE `p_insereMedico`(
+	IN `nomeNovo` VARCHAR(150),
+	IN `cpfNovo` VARCHAR(30),
+	IN `crmNovo` VARCHAR(20),
+	IN `emailNovo` VARCHAR(100),
+	IN `especialidade_codEspecialidadeNovo` VARCHAR(20)
+)
+BEGIN
+
+	INSERT INTO medicos(nomeMedico, cpfMedico, crmMedico, emailMedico, especialidade_codEspecialidade) VALUES(nomeNovo, cpfNovo, crmNovo, emailNovo, especialidade_codEspecialidadeNovo);
+	SELECT * FROM medicos;
+	
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_inserePaciente
+DROP PROCEDURE IF EXISTS `p_inserePaciente`;
+DELIMITER //
+CREATE PROCEDURE `p_inserePaciente`(
+	IN `nomeNovo` VARCHAR(150),
+	IN `cpfNovo` VARCHAR(30),
+	IN `telefoneNovo` VARCHAR(40),
+	IN `emailNovo` VARCHAR(100)
+)
+BEGIN
+		INSERT INTO pacientes(nomePaciente, cpfPaciente, telefonePaciente, emailPaciente) VALUES(nomeNovo, cpfNovo, telefoneNovo, emailNovo);
+		SELECT * FROM pacientes;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para procedure tiago_victoria_clinica.p_insereReceita
+DROP PROCEDURE IF EXISTS `p_insereReceita`;
+DELIMITER //
+CREATE PROCEDURE `p_insereReceita`(
+	IN `remediosPrescritosNovo` VARCHAR(250)
+)
+BEGIN
+	INSERT INTO receita(remediosPrescritos) VALUES(remediosPrescritosNovo);
+	SELECT * FROM receita ;
+END//
+DELIMITER ;
+
+-- Copiando estrutura para tabela tiago_victoria_clinica.receita
+DROP TABLE IF EXISTS `receita`;
+CREATE TABLE IF NOT EXISTS `receita` (
+  `codReceita` int NOT NULL AUTO_INCREMENT,
+  `remediosPrescritos` varchar(250) NOT NULL,
+  PRIMARY KEY (`codReceita`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+-- Copiando dados para a tabela tiago_victoria_clinica.receita: ~0 rows (aproximadamente)
+DELETE FROM `receita`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
