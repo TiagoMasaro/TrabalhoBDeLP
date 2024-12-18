@@ -12,25 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class MedicoDao { // Data Acess Object padrão
+public class FuncionarioDao { // Data Acess Object padrão
 
-    EspecialidadeDao objEspecialidadeDao = new EspecialidadeDao();
+    CargoFuncionarioDao objCargoFuncionarioDao = new CargoFuncionarioDao();
 
-    public List<Medico> getLista() {
-        String sql = "select * from medicos";
-        List<Medico> lista = new ArrayList<>();
+    public List<Funcionario> getLista() {
+        String sql = "select * from funcionarios";
+        List<Funcionario> lista = new ArrayList<>();
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Medico objMedico = new Medico();
-                objMedico.setCodMedico(rs.getInt("codMedico"));
-                objMedico.setNome(rs.getString("nomeMedico"));
-                objMedico.setCpf(rs.getString("cpfMedico"));
-              objMedico.setCrm(rs.getString("crmMedico"));
-              objMedico.setEmail(rs.getString("emailMedico"));
-                objMedico.setObjEspecialidade(objEspecialidadeDao.localizar(rs.getInt("especialidadeMedico")));
-                lista.add(objMedico);
+                Funcionario objFuncionario = new Funcionario();
+                objFuncionario.setCodMedico(rs.getInt("codFuncionario"));
+                objFuncionario.setNome(rs.getString("nomeFuncionario"));
+                objFuncionario.setSalario(rs.getDouble("salarioFuncionario"));
+                objFuncionario.setObjcargoFuncionario(objCargoFuncionarioDao.localizar(rs.getInt("cargoFuncionario_codCargo")));
+                lista.add(objFuncionario);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro de SQL: " + ex.getMessage());
@@ -38,21 +36,19 @@ public class MedicoDao { // Data Acess Object padrão
         return lista;
     }
 
-    public boolean incluir(Medico objMedico) {
-        String sql = "insert into medicos(nomeMedico,cpfMedico,crmMedico,emailMedico,especialidadeMedico) values(?,?,?,?,?)";
+    public boolean incluir(Funcionario objFuncionario) {
+        String sql = "insert into funcionarios(nomeFuncionario, salarioFuncionario, cargoFuncionario_codCargo) values(?,?,?)";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-            pst.setString(1, objMedico.getNome());
-            pst.setString(2, objMedico.getCpf());
-            pst.setString(3, objMedico.getCrm());
-            pst.setString(4, objMedico.getEmail());
-             pst.setInt(5, objMedico.getObjEspecialidade().getCodEspecialidade());
+            pst.setString(1, objFuncionario.getNome());
+            pst.setDouble(2, objFuncionario.getSalario());
+             pst.setInt(3, objFuncionario.getObjcargoFuncionario().getCodCargo());
            
             if (pst.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Médico cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso!");
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Médico não cadastrado!");
+                JOptionPane.showMessageDialog(null, "Funcionario não cadastrado!");
                 return false;
             }
         } catch (SQLException ex) {
@@ -61,16 +57,14 @@ public class MedicoDao { // Data Acess Object padrão
         return false;
     }
 
-    public boolean alterar(Medico objMedico) {
-        String sql = "update medicos set nomeMedico=?, cpfMedico=?, crmMedico=?, emailMedico=?,especialidadeMedico=?  where codMedico=?";
+    public boolean alterar(Funcionario objFuncionario) {
+        String sql = "update funcionarios set nomeFuncionario=?, salarioFuncionario=?, objcargoFuncionario=?  where codFuncionario=?";
         try {
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
-            pst.setString(1, objMedico.getNome());
-            pst.setString(2, objMedico.getCpf());
-            pst.setString(3, objMedico.getCrm());
-            pst.setString(4, objMedico.getEmail());
-            pst.setInt(5, objMedico.getObjEspecialidade().getCodEspecialidade());
-            pst.setInt(6, objMedico.getCodMedico());
+            pst.setString(1, objFuncionario.getNome());
+            pst.setDouble(2, objFuncionario.getSalario());
+            pst.setInt(3, objFuncionario.getObjcargoFuncionario().getCodCargo());
+            pst.setInt(4, objFuncionario.getCodMedico());
             if (pst.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Médico alterado com sucesso!");
                 return true;
@@ -111,19 +105,17 @@ public class MedicoDao { // Data Acess Object padrão
 
     }
     
-    public Medico localizar(Integer id){
-        String sql = "select * from medicos where codMedico=?";
-        Medico obj = new Medico();
+    public Funcionario localizar(Integer id){
+        String sql = "select * from funcionarios where codFuncionario=?";
+        Funcionario obj = new Funcionario();
         try{
             PreparedStatement pst = Conexao.getPreparedStatement(sql);
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery(); 
                while(rs.next()){
-                   obj.setCodMedico(rs.getInt("codMedico"));
-                   obj.setNome(rs.getNString("nomeMedico"));
-                   obj.setCpf(rs.getNString("cpfMedico"));
-                   obj.setCrm(rs.getNString("crmMedico"));
-                   obj.setEmail(rs.getNString("emailMedico"));
+                   obj.setCodMedico(rs.getInt("codFuncionario"));
+                   obj.setNome(rs.getNString("nomeFuncionario"));
+                   obj.setSalario(rs.getDouble("salarioFuncionario"));
                   
                    return obj;
                }

@@ -15,10 +15,11 @@ import java.util.Objects;
  *
  * @author 12968505602
  */
-public class Medico implements Serializable{
+public class Funcionario implements Serializable{
     private Integer codMedico;
-    private String nome, cpf, crm, email;
-    private Especialidade objEspecialidade;
+    private String nome;
+    private Double salario;
+    private CargoFuncionario objcargoFuncionario;
 
     public Integer getCodMedico() {
         return codMedico;
@@ -28,7 +29,6 @@ public class Medico implements Serializable{
         this.codMedico = codMedico;
     }
 
-   
     public String getNome() {
         return nome;
     }
@@ -37,41 +37,26 @@ public class Medico implements Serializable{
         this.nome = nome;
     }
 
-    public String getCpf() {
-        return cpf;
+    public Double getSalario() {
+        return salario;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setSalario(Double salario) {
+        this.salario = salario;
     }
 
-    public String getCrm() {
-        return crm;
+    public CargoFuncionario getObjcargoFuncionario() {
+        return objcargoFuncionario;
     }
 
-    public void setCrm(String crm) {
-        this.crm = crm;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Especialidade getObjEspecialidade() {
-        return objEspecialidade;
-    }
-
-    public void setObjEspecialidade(Especialidade objEspecialidade) {
-        this.objEspecialidade = objEspecialidade;
+    public void setObjcargoFuncionario(CargoFuncionario objcargoFuncionario) {
+        this.objcargoFuncionario = objcargoFuncionario;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.codMedico);
         return hash;
     }
 
@@ -86,31 +71,13 @@ public class Medico implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Medico other = (Medico) obj;
-        if (!Objects.equals(this.nome, other.nome)) {
-            return false;
-        }
-        if (!Objects.equals(this.cpf, other.cpf)) {
-            return false;
-        }
-        if (!Objects.equals(this.crm, other.crm)) {
-            return false;
-        }
-        if (!Objects.equals(this.email, other.email)) {
-            return false;
-        }
+        final Funcionario other = (Funcionario) obj;
         if (!Objects.equals(this.codMedico, other.codMedico)) {
-            return false;
-        }
-        if (!Objects.equals(this.objEspecialidade, other.objEspecialidade)) {
             return false;
         }
         return true;
     }
 
-  public String toString(){
-      return this.getNome();
-  }
-
+    
 
 }
